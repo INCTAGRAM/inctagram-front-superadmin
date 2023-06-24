@@ -1,0 +1,52 @@
+{
+  "name": "inctagram-front-superadmin",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "lint:fix": "yarn run lint --fix",
+    "ts-lint": "tsc --project tsconfig.json",
+    "ts-lint:watch": "tsc --project tsconfig.json --watch",
+    "prepare": "husky install"
+  },
+  "dependencies": {
+    "@mui/material": "^5.12.0",
+    "@mui/styles": "^5.13.2",
+    "icomoon-react": "^3.0.0",
+    "next": "13.2.4",
+    "nprogress": "^0.2.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-hook-form": "^7.43.9",
+    "sass": "^1.60.0",
+    "yup": "^1.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "18.15.11",
+    "@types/nprogress": "^0.2.0",
+    "@types/react": "18.0.31",
+    "@types/react-dom": "18.0.11",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "eslint": "8.22.0",
+    "eslint-config-next": "13.2.4",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^8.0.3",
+    "jest": "29.5.0",
+    "lint-staged": "^13.2.0",
+    "prettier": "^2.3.2",
+    "typescript": "5.0.2"
+  },
+  "lint-staged": {
+    "*.(ts|tsx)": [
+      "eslint --fix"
+    ],
+    "*.(ts|tsx|md|json)": [
+      "prettier --write"
+    ]
+  }
+}

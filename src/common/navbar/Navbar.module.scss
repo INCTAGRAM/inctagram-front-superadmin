@@ -1,0 +1,39 @@
+@import "src/assets/styles/variables";
+
+.navbar {
+  padding: 72px 20px 150px 60px;
+  border-right: 1px solid $dark_300;
+  min-height: calc(100vh - 60px);
+  height: 100%;
+  li {
+    margin-bottom: 25px;
+    a,
+    button {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: $light_100;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+    }
+    & svg {
+      fill: $light_100;
+    }
+    &.active {
+      a {
+        color: $primary_500;
+        font-weight: 700;
+      }
+      svg {
+        fill: $primary_500;
+      }
+    }
+    &.margin_top_link a {
+      margin-top: 60px;
+    }
+    &.no_active_link a {
+      color: $light_100;
+    }
+  }
+}

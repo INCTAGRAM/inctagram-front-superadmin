@@ -1,0 +1,61 @@
+@import "src/assets/styles/variables";
+
+.popup_background {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, .8);
+  z-index: 10;
+  opacity: 0;
+  visibility: hidden;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .popup {
+    min-width: 378px;
+    background: $dark_300;
+    border: 1px solid #4C4C4C;
+    border-radius: 2px;
+
+    .popup_header {
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #4C4C4C;
+
+      p.title {
+        color: $light_100;
+        font-size: 20px;
+        font-weight: 700;
+      }
+
+      .close_btn {
+        cursor: pointer;
+      }
+
+      .rightAction {
+        color: $primary_500;
+        cursor: pointer;
+        font-family: Inter;
+        font-style: normal;
+        font-weight: 800;
+        font-size: 16px;
+        line-height: 24px;
+      }
+    }
+
+    .popup_body {
+      padding: 12px 24px;
+    }
+  }
+}
+
+.popup_open {
+  opacity: 1;
+  visibility: visible;
+}
