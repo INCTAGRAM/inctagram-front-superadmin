@@ -1,18 +1,5 @@
 @import "src/assets/styles/variables";
 
-.globalLoading {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: $dark_500;
-  z-index: 100;
-}
-
 .headerContainer {
   height: 60px;
   display: flex;
@@ -30,9 +17,22 @@
   }
 
   .logo {
-    max-width: 128px;
-    height: 36px;
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
     margin-left: 60px;
+
+    img {
+      max-width: 128px;
+      height: 36px;
+    }
+
+    p {
+      display: inline;
+      font-size: 11px;
+      color: $light_100;
+      padding-bottom: 4px;
+    }
   }
 
   .logout {

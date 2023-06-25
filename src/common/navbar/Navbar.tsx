@@ -12,10 +12,7 @@ export const Navbar = () => {
     <>
       <ul className={styles.navbar}>
         {navbarPaths.map((item: INavbar, index) => {
-          const finalClass =
-            asPath === item.path
-              ? `${styles.active} ${styles.navbar_link} ${item.class}`
-              : `${styles.navbar_link} ${item.class}`
+          const finalClass = asPath === item.path ? `${styles.active} ${styles.navbar_link}` : `${styles.navbar_link}`
 
           return (
             <li key={index} className={finalClass}>
