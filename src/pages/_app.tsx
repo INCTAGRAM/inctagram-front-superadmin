@@ -5,6 +5,8 @@ import React, { ReactElement, ReactNode } from 'react'
 import { NextPage } from 'next'
 import { useLoader } from '@/hooks/useLoader'
 import '@/assets/styles/nprogress.scss'
+import { ApolloProvider } from '@apollo/client'
+import { apolloClient } from '@/helpers/apollo-client'
 
 export type NextPageWithLayout<P = {}> = NextPage<P> & {
   getLayout?: (page: ReactElement) => ReactNode
@@ -19,5 +21,5 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
 
   const getLayout = Component.getLayout ?? ((page) => page)
 
-  return getLayout(<Component {...pageProps} />)
+  return <ApolloProvider client={apolloClient}>{getLayout(<Component {...pageProps} />)}</ApolloProvider>
 }

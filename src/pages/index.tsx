@@ -1,7 +1,8 @@
 import { getNavbarLayout } from '@/common/layout/navbarLayout/NavbarLayout'
+import { UsersList } from '@/modules/usersList'
 
 const Index = () => {
-  return <h1>Users list</h1>
+  return <UsersList />
 }
 
 Index.getLayout = getNavbarLayout
