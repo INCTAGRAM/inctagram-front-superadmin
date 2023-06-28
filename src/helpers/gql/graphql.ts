@@ -156,7 +156,7 @@ export const HealthCheckDocument = {
     {
       kind: 'OperationDefinition',
       operation: 'query',
-      name: { kind: 'Name', value: 'HealthCheck' },
+      name: { kind: 'Name', value: 'healthCheck' },
       selectionSet: {
         kind: 'SelectionSet',
         selections: [{ kind: 'Field', name: { kind: 'Name', value: 'healthCheck' } }],
