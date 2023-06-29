@@ -25,6 +25,18 @@ export type Admin = {
   updatedAt: Scalars['DateTime']['output']
 }
 
+/** Banned,Active,All */
+export enum BanFilterType {
+  Active = 'Active',
+  All = 'All',
+  Banned = 'Banned',
+}
+
+export type BanUserInput = {
+  banReason?: InputMaybe<Scalars['String']['input']>
+  id: Scalars['String']['input']
+}
+
 export type CreateAdminInput = {
   email: Scalars['String']['input']
   password: Scalars['String']['input']
@@ -46,10 +58,21 @@ export type ImageOutput = {
   url?: Maybe<Scalars['String']['output']>
 }
 
+export type ImagesPaginationOutput = {
+  __typename?: 'ImagesPaginationOutput'
+  data: Array<ImageOutput>
+}
+
 export type Mutation = {
   __typename?: 'Mutation'
+  banUser: Scalars['Boolean']['output']
   createAdmin: Admin
   deleteUser: Scalars['Boolean']['output']
+  unBanUser: Scalars['Boolean']['output']
+}
+
+export type MutationBanUserArgs = {
+  input: BanUserInput
 }
 
 export type MutationCreateAdminArgs = {
@@ -60,14 +83,8 @@ export type MutationDeleteUserArgs = {
   input: DeleteUserInput
 }
 
-export type PaymentOutput = {
-  __typename?: 'PaymentOutput'
-  currency: Currency
-  endDate: Scalars['DateTime']['output']
-  price: Scalars['Float']['output']
-  provider: PaymentProvider
-  startDate: Scalars['DateTime']['output']
-  type: SubscriptionType
+export type MutationUnBanUserArgs = {
+  input: UnBanUserInput
 }
 
 /** STRIPE,PAYPAL */
@@ -76,20 +93,56 @@ export enum PaymentProvider {
   Stripe = 'STRIPE',
 }
 
+/** CONFIRMED,PENDING,REJECTED */
+export enum PaymentStatus {
+  Confirmed = 'CONFIRMED',
+  Pending = 'PENDING',
+  Rejected = 'REJECTED',
+}
+
+export type PaymentWithUserDetailsOutput = {
+  __typename?: 'PaymentWithUserDetailsOutput'
+  amount: Scalars['Float']['output']
+  currency: Currency
+  dateAdded: Scalars['String']['output']
+  id: Scalars['ID']['output']
+  paymentType: PaymentProvider
+  photo?: Maybe<Scalars['String']['output']>
+  subscriptionType: SubscriptionType
+  username: Scalars['String']['output']
+}
+
+/** Username,Amount,PaymentType,DateAdded,Status */
+export enum PaymentsSortFields {
+  Amount = 'Amount',
+  DateAdded = 'DateAdded',
+  PaymentType = 'PaymentType',
+  Status = 'Status',
+  Username = 'Username',
+}
+
+export type PaymentsWithUserDetailsPaginationOutput = {
+  __typename?: 'PaymentsWithUserDetailsPaginationOutput'
+  data: Array<PaymentWithUserDetailsOutput>
+}
+
 export type Query = {
   __typename?: 'Query'
   healthCheck: Scalars['String']['output']
-  payments?: Maybe<Array<PaymentOutput>>
+  paymentsList: PaymentsWithUserDetailsPaginationOutput
   userInfo: UserInfoOutput
-  userList: Array<UserOutput>
-  userPhotos?: Maybe<Array<ImageOutput>>
+  userList: UserPaginationOutput
+  userPayments?: Maybe<UserPaymentsPaginationOutput>
+  userPhotos?: Maybe<ImagesPaginationOutput>
 }
 
-export type QueryPaymentsArgs = {
+export type QueryPaymentsListArgs = {
   page?: Scalars['Int']['input']
   pageSize?: Scalars['Int']['input']
+  searchUsernameTerm?: Scalars['String']['input']
   sortDirection?: SortDirectionType
-  userId: Scalars['ID']['input']
+  sortField?: PaymentsSortFields
+  status?: PaymentStatus
 }
 
 export type QueryUserInfoArgs = {
@@ -97,11 +150,19 @@ export type QueryUserInfoArgs = {
 }
 
 export type QueryUserListArgs = {
+  banFilter: BanFilterType
   page?: Scalars['Int']['input']
   pageSize?: Scalars['Int']['input']
   searchUsernameTerm?: Scalars['String']['input']
   sortDirection?: SortDirectionType
   sortField?: UserSortFields
+}
+
+export type QueryUserPaymentsArgs = {
+  page?: Scalars['Int']['input']
+  pageSize?: Scalars['Int']['input']
+  sortDirection?: SortDirectionType
+  userId: Scalars['ID']['input']
 }
 
 export type QueryUserPhotosArgs = {
@@ -123,11 +184,17 @@ export enum SubscriptionType {
   Reccuring = 'RECCURING',
 }
 
+export type UnBanUserInput = {
+  id: Scalars['String']['input']
+}
+
 export type UserInfoOutput = {
   __typename?: 'UserInfoOutput'
   avatar: ImageOutput
+  banReason: Scalars['String']['output']
   dateAdded: Scalars['String']['output']
   id: Scalars['ID']['output']
+  isBanned: Scalars['Boolean']['output']
   profileLink: Scalars['String']['output']
   username: Scalars['String']['output']
 }
@@ -138,6 +205,26 @@ export type UserOutput = {
   id: Scalars['ID']['output']
   profileLink: Scalars['String']['output']
   username: Scalars['String']['output']
+}
+
+export type UserPaginationOutput = {
+  __typename?: 'UserPaginationOutput'
+  data: Array<UserOutput>
+}
+
+export type UserPaymentOutput = {
+  __typename?: 'UserPaymentOutput'
+  currency: Currency
+  endDate: Scalars['DateTime']['output']
+  paymentType: PaymentProvider
+  price: Scalars['Float']['output']
+  startDate: Scalars['DateTime']['output']
+  subscriptionType: SubscriptionType
+}
+
+export type UserPaymentsPaginationOutput = {
+  __typename?: 'UserPaymentsPaginationOutput'
+  data: Array<UserPaymentOutput>
 }
 
 /** Username,DateAdded */
