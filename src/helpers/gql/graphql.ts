@@ -233,21 +233,51 @@ export enum UserSortFields {
   Username = 'Username',
 }
 
-export type HealthCheckQueryVariables = Exact<{ [key: string]: never }>
+export type UsersQueryVariables = Exact<{ [key: string]: never }>
 
-export type HealthCheckQuery = { __typename?: 'Query'; healthCheck: string }
+export type UsersQuery = {
+  __typename?: 'Query'
+  userList: { __typename?: 'UserPaginationOutput'; data: Array<{ __typename?: 'UserOutput'; username: string }> }
+}
 
-export const HealthCheckDocument = {
+export const UsersDocument = {
   kind: 'Document',
   definitions: [
     {
       kind: 'OperationDefinition',
       operation: 'query',
-      name: { kind: 'Name', value: 'healthCheck' },
+      name: { kind: 'Name', value: 'users' },
       selectionSet: {
         kind: 'SelectionSet',
-        selections: [{ kind: 'Field', name: { kind: 'Name', value: 'healthCheck' } }],
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'userList' },
+            arguments: [
+              { kind: 'Argument', name: { kind: 'Name', value: 'pageSize' }, value: { kind: 'IntValue', value: '50' } },
+              { kind: 'Argument', name: { kind: 'Name', value: 'page' }, value: { kind: 'IntValue', value: '1' } },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'banFilter' },
+                value: { kind: 'EnumValue', value: 'All' },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'data' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'username' } }],
+                  },
+                },
+              ],
+            },
+          },
+        ],
       },
     },
   ],
-} as unknown as DocumentNode<HealthCheckQuery, HealthCheckQueryVariables>
+} as unknown as DocumentNode<UsersQuery, UsersQueryVariables>

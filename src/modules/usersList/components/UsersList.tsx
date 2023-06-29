@@ -1,20 +1,23 @@
 import { useQuery } from '@apollo/client'
-import { GetHealthCheck } from '@/modules/usersList/queries/users'
+import { GetUsers } from '@/modules/usersList/queries/users'
 
 export const UsersList = () => {
-  const { loading, error, data } = useQuery(GetHealthCheck)
+  const { loading, error, data } = useQuery(GetUsers)
 
-  console.log(data)
+  console.log(data?.userList.data)
   console.log(error)
 
   if (loading) return <h1>Loading</h1>
 
-  if (data)
+  if (data) {
     return (
       <>
-        <div>{data.healthCheck}</div>
+        {data.userList.data.map((user, i) => (
+          <div key={i}>{user.username}</div>
+        ))}
       </>
     )
+  }
 
   return <div>UsersList</div>
 }
