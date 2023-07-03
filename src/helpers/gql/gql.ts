@@ -13,7 +13,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-  '\n  query users {\n    userList(pageSize: 50, page: 1, banFilter: All) {\n      data {\n        username\n      }\n    }\n  }\n':
+  '\n  query users($pageSize: Int! = 8, $page: Int! = 1, $banFilter: BanFilterType!) {\n    userList(pageSize: $pageSize, page: $page, banFilter: $banFilter) {\n      data {\n        id\n        username\n        profileLink\n        dateAdded\n      }\n      totalCount\n    }\n  }\n':
     types.UsersDocument,
 }
 
@@ -35,8 +35,8 @@ export function graphql(source: string): unknown
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query users {\n    userList(pageSize: 50, page: 1, banFilter: All) {\n      data {\n        username\n      }\n    }\n  }\n'
-): (typeof documents)['\n  query users {\n    userList(pageSize: 50, page: 1, banFilter: All) {\n      data {\n        username\n      }\n    }\n  }\n']
+  source: '\n  query users($pageSize: Int! = 8, $page: Int! = 1, $banFilter: BanFilterType!) {\n    userList(pageSize: $pageSize, page: $page, banFilter: $banFilter) {\n      data {\n        id\n        username\n        profileLink\n        dateAdded\n      }\n      totalCount\n    }\n  }\n'
+): (typeof documents)['\n  query users($pageSize: Int! = 8, $page: Int! = 1, $banFilter: BanFilterType!) {\n    userList(pageSize: $pageSize, page: $page, banFilter: $banFilter) {\n      data {\n        id\n        username\n        profileLink\n        dateAdded\n      }\n      totalCount\n    }\n  }\n']
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {}

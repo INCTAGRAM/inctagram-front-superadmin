@@ -1,20 +1,25 @@
 import { useQuery } from '@apollo/client'
 import { GetUsers } from '@/modules/usersList/queries/users'
+import { BanFilterType } from '@/helpers/gql/graphql'
+import { Table } from '@/modules/usersList/components/table/Table'
+import { useState } from 'react'
 
 export const UsersList = () => {
-  const { loading, error, data } = useQuery(GetUsers)
+  const [usersArgs, setUsersArgs] = useState<{ pageSize?: number; page?: number; banFilter: BanFilterType }>({
+    banFilter: BanFilterType.Active,
+  })
+  const { loading, data } = useQuery(GetUsers, {
+    variables: usersArgs,
+  })
 
-  console.log(data?.userList.data)
-  console.log(error)
+  console.log(data)
 
   if (loading) return <h1>Loading</h1>
 
   if (data) {
     return (
       <>
-        {data.userList.data.map((user, i) => (
-          <div key={i}>{user.username}</div>
-        ))}
+        <Table usersData={data} />
       </>
     )
   }

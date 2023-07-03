@@ -61,6 +61,7 @@ export type ImageOutput = {
 export type ImagesPaginationOutput = {
   __typename?: 'ImagesPaginationOutput'
   data: Array<ImageOutput>
+  totalCount: Scalars['Float']['output']
 }
 
 export type Mutation = {
@@ -124,6 +125,7 @@ export enum PaymentsSortFields {
 export type PaymentsWithUserDetailsPaginationOutput = {
   __typename?: 'PaymentsWithUserDetailsPaginationOutput'
   data: Array<PaymentWithUserDetailsOutput>
+  totalCount: Scalars['Float']['output']
 }
 
 export type Query = {
@@ -150,7 +152,7 @@ export type QueryUserInfoArgs = {
 }
 
 export type QueryUserListArgs = {
-  banFilter: BanFilterType
+  banFilter?: InputMaybe<BanFilterType>
   page?: Scalars['Int']['input']
   pageSize?: Scalars['Int']['input']
   searchUsernameTerm?: Scalars['String']['input']
@@ -210,6 +212,7 @@ export type UserOutput = {
 export type UserPaginationOutput = {
   __typename?: 'UserPaginationOutput'
   data: Array<UserOutput>
+  totalCount: Scalars['Float']['output']
 }
 
 export type UserPaymentOutput = {
@@ -225,6 +228,7 @@ export type UserPaymentOutput = {
 export type UserPaymentsPaginationOutput = {
   __typename?: 'UserPaymentsPaginationOutput'
   data: Array<UserPaymentOutput>
+  totalCount: Scalars['Float']['output']
 }
 
 /** Username,DateAdded */
@@ -233,11 +237,19 @@ export enum UserSortFields {
   Username = 'Username',
 }
 
-export type UsersQueryVariables = Exact<{ [key: string]: never }>
+export type UsersQueryVariables = Exact<{
+  pageSize?: Scalars['Int']['input']
+  page?: Scalars['Int']['input']
+  banFilter: BanFilterType
+}>
 
 export type UsersQuery = {
   __typename?: 'Query'
-  userList: { __typename?: 'UserPaginationOutput'; data: Array<{ __typename?: 'UserOutput'; username: string }> }
+  userList: {
+    __typename?: 'UserPaginationOutput'
+    totalCount: number
+    data: Array<{ __typename?: 'UserOutput'; id: string; username: string; profileLink: string; dateAdded: string }>
+  }
 }
 
 export const UsersDocument = {
@@ -247,6 +259,25 @@ export const UsersDocument = {
       kind: 'OperationDefinition',
       operation: 'query',
       name: { kind: 'Name', value: 'users' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'pageSize' } },
+          type: { kind: 'NonNullType', type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } } },
+          defaultValue: { kind: 'IntValue', value: '8' },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'page' } },
+          type: { kind: 'NonNullType', type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } } },
+          defaultValue: { kind: 'IntValue', value: '1' },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'banFilter' } },
+          type: { kind: 'NonNullType', type: { kind: 'NamedType', name: { kind: 'Name', value: 'BanFilterType' } } },
+        },
+      ],
       selectionSet: {
         kind: 'SelectionSet',
         selections: [
@@ -254,12 +285,20 @@ export const UsersDocument = {
             kind: 'Field',
             name: { kind: 'Name', value: 'userList' },
             arguments: [
-              { kind: 'Argument', name: { kind: 'Name', value: 'pageSize' }, value: { kind: 'IntValue', value: '50' } },
-              { kind: 'Argument', name: { kind: 'Name', value: 'page' }, value: { kind: 'IntValue', value: '1' } },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'pageSize' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'pageSize' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'page' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'page' } },
+              },
               {
                 kind: 'Argument',
                 name: { kind: 'Name', value: 'banFilter' },
-                value: { kind: 'EnumValue', value: 'All' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'banFilter' } },
               },
             ],
             selectionSet: {
@@ -270,9 +309,15 @@ export const UsersDocument = {
                   name: { kind: 'Name', value: 'data' },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'username' } }],
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'username' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'profileLink' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'dateAdded' } },
+                    ],
                   },
                 },
+                { kind: 'Field', name: { kind: 'Name', value: 'totalCount' } },
               ],
             },
           },
