@@ -5,6 +5,14 @@
     background: #171717;
     text-align: left;
     color: #fff;
+
+    svg {
+      margin-left: 5px;
+    }
+
+    &.desc svg {
+      rotate: 180deg;
+    }
   }
 
   tbody tr td {

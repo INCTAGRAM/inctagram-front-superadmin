@@ -36,13 +36,25 @@ export const Table = ({ usersData, usersArgs, setUsersArgs }: Props) => {
     }
   }
 
+  const classNameDirectionSort = usersArgs.sortDirection === SortDirectionType.Desc ? styles.desc : styles.asc
+
   return (
     <table className={styles.usersTable}>
       <thead className={styles.userList}>
         <tr>
           <th>User ID</th>
-          <th onClick={sortUsername}>Username</th>
-          <th onClick={sortDate}>Date added</th>
+          <th onClick={sortUsername} className={classNameDirectionSort}>
+            Username
+            {usersArgs.sortField === UserSortFields.Username && (
+              <IcomoonReact icon={'arrow-ios-Down-outline'} iconSet={iconSet} size={18} color={'#fff'} />
+            )}
+          </th>
+          <th onClick={sortDate} className={classNameDirectionSort}>
+            Date added
+            {usersArgs.sortField === UserSortFields.DateAdded && (
+              <IcomoonReact icon={'arrow-ios-Down-outline'} iconSet={iconSet} size={18} color={'#fff'} />
+            )}
+          </th>
           <th></th>
         </tr>
       </thead>
