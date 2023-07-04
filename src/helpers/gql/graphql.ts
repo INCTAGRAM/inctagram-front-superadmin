@@ -240,6 +240,9 @@ export enum UserSortFields {
 export type UsersQueryVariables = Exact<{
   pageSize?: Scalars['Int']['input']
   page?: Scalars['Int']['input']
+  sortDirection?: SortDirectionType
+  searchUsernameTerm?: Scalars['String']['input']
+  sortField?: UserSortFields
   banFilter: BanFilterType
 }>
 
@@ -264,13 +267,34 @@ export const UsersDocument = {
           kind: 'VariableDefinition',
           variable: { kind: 'Variable', name: { kind: 'Name', value: 'pageSize' } },
           type: { kind: 'NonNullType', type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } } },
-          defaultValue: { kind: 'IntValue', value: '8' },
+          defaultValue: { kind: 'IntValue', value: '10' },
         },
         {
           kind: 'VariableDefinition',
           variable: { kind: 'Variable', name: { kind: 'Name', value: 'page' } },
           type: { kind: 'NonNullType', type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } } },
           defaultValue: { kind: 'IntValue', value: '1' },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'sortDirection' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'SortDirectionType' } },
+          },
+          defaultValue: { kind: 'EnumValue', value: 'Desc' },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'searchUsernameTerm' } },
+          type: { kind: 'NonNullType', type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } } },
+          defaultValue: { kind: 'StringValue', value: '', block: false },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'sortField' } },
+          type: { kind: 'NonNullType', type: { kind: 'NamedType', name: { kind: 'Name', value: 'UserSortFields' } } },
+          defaultValue: { kind: 'EnumValue', value: 'DateAdded' },
         },
         {
           kind: 'VariableDefinition',
@@ -294,6 +318,21 @@ export const UsersDocument = {
                 kind: 'Argument',
                 name: { kind: 'Name', value: 'page' },
                 value: { kind: 'Variable', name: { kind: 'Name', value: 'page' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'sortDirection' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'sortDirection' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'searchUsernameTerm' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'searchUsernameTerm' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'sortField' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'sortField' } },
               },
               {
                 kind: 'Argument',
