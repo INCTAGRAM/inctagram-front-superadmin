@@ -237,6 +237,12 @@ export enum UserSortFields {
   Username = 'Username',
 }
 
+export type DeleteUsersMutationVariables = Exact<{
+  input: DeleteUserInput
+}>
+
+export type DeleteUsersMutation = { __typename?: 'Mutation'; deleteUser: boolean }
+
 export type UsersQueryVariables = Exact<{
   pageSize?: Scalars['Int']['input']
   page?: Scalars['Int']['input']
@@ -255,6 +261,39 @@ export type UsersQuery = {
   }
 }
 
+export const DeleteUsersDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'DeleteUsers' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'input' } },
+          type: { kind: 'NonNullType', type: { kind: 'NamedType', name: { kind: 'Name', value: 'DeleteUserInput' } } },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'deleteUser' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'input' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'input' } },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<DeleteUsersMutation, DeleteUsersMutationVariables>
 export const UsersDocument = {
   kind: 'Document',
   definitions: [

@@ -1,9 +1,12 @@
-import styles from './Table.module.scss'
 import { dateConverter } from '@/helpers/dateConverter'
 import { SortDirectionType, UserSortFields, UsersQuery } from '@/helpers/gql/graphql'
 import IcomoonReact from 'icomoon-react'
 import iconSet from '@/assets/icons/selection.json'
 import { UsersListArgsType } from '@/modules/usersList/queries/types'
+import { useMutation } from '@apollo/client'
+import { DELETE_USERS } from '@/modules/usersList/mutation/users'
+import { GetUsers } from '@/modules/usersList/queries/users'
+import styles from './Table.module.scss'
 
 type Props = {
   usersData: UsersQuery
@@ -12,6 +15,12 @@ type Props = {
 }
 
 export const Table = ({ usersData, usersArgs, setUsersArgs }: Props) => {
+  const [deleteUser, { loading: deleteUserLoading, error: deleteUserError }] = useMutation(DELETE_USERS, {
+    refetchQueries: [
+      GetUsers, // DocumentNode object parsed with gql
+      'users', // Query name
+    ],
+  })
   const sortUsername = () => {
     if (usersArgs.sortField === UserSortFields.Username) {
       setUsersArgs({
@@ -54,7 +63,7 @@ export const Table = ({ usersData, usersArgs, setUsersArgs }: Props) => {
               <td>{user.username}</td>
               <td>{dateConverter.fromMilliseconds(+user.dateAdded)}</td>
               <td>
-                <button>
+                <button onClick={() => deleteUser({ variables: { input: { id: user.id } } })}>
                   <IcomoonReact iconSet={iconSet} icon={'more-horizontal'} size={16} color={'white'} />
                 </button>
               </td>
