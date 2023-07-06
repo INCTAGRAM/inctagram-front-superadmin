@@ -3,9 +3,9 @@ import { SortDirectionType, UserSortFields, UsersQuery } from '@/helpers/gql/gra
 import IcomoonReact from 'icomoon-react'
 import iconSet from '@/assets/icons/selection.json'
 import { UsersListArgsType } from '@/modules/usersList/queries/types'
-import styles from './Table.module.scss'
 import { PopupForControl } from '@/modules/usersList/components/popupForControl/PopupForControl'
 import { useState } from 'react'
+import styles from './Table.module.scss'
 
 type Props = {
   usersData: UsersQuery
@@ -62,7 +62,7 @@ export const Table = ({ usersData, usersArgs, setUsersArgs }: Props) => {
                     iconSet={iconSet}
                     icon={'more-horizontal'}
                     size={24}
-                    color={openUserId === user.id ? 'blue' : 'white'}
+                    color={openUserId === user.id ? '#397DF6' : 'white'}
                   />
                 </button>
                 <PopupForControl isOpen={openUserId === user.id} setIsOpen={setOpenUserId} userId={user.id} />
