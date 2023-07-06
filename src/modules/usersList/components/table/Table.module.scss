@@ -1,6 +1,6 @@
 .usersTable {
   thead tr th {
-    width: 33.33%;
+    width: 25%;
     padding: 15px 25px;
     background: #171717;
     text-align: left;
@@ -15,5 +15,10 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+
+    &:last-child {
+      overflow: visible;
+      text-align: center;
+    }
   }
 }

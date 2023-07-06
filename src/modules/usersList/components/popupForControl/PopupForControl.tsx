@@ -22,16 +22,7 @@ export const PopupForControl = ({ userId, setIsOpen, isOpen }: PropsType) => {
       'users', // Query name
     ],
   })
-  console.log(isOpen)
   const popupForControlRef = useRef<HTMLDivElement>(null)
-  //
-  // useEffect(() => {
-  //   if (isSuccess) {
-  //     closePostPopup()
-  //     setIsOpenDeletePostPopup(false)
-  //   }
-  // }, [isSuccess])
-
   const closePopupForControl = () => {
     setIsOpen(false)
   }
@@ -40,6 +31,7 @@ export const PopupForControl = ({ userId, setIsOpen, isOpen }: PropsType) => {
 
   const closeDeletePostPopup = () => {
     setIsOpenDeletePostPopup(false)
+    closePopupForControl()
   }
 
   const deletePostHandler = () => {
@@ -51,8 +43,16 @@ export const PopupForControl = ({ userId, setIsOpen, isOpen }: PropsType) => {
       {isOpen && (
         <div className={styles.controlElements}>
           <button onClick={() => setIsOpenDeletePostPopup(true)}>
-            <IcomoonReact iconSet={iconSet} color={'#fff'} icon="trash-outline" size={20} />
+            <IcomoonReact iconSet={iconSet} color={'#fff'} icon="person-remove-outline" size={20} />
             <span>Delete User</span>
+          </button>
+          <button>
+            <IcomoonReact iconSet={iconSet} color={'#fff'} icon="Block" size={20} />
+            <span>Ban in the system</span>
+          </button>
+          <button>
+            <IcomoonReact iconSet={iconSet} color={'#fff'} icon="more-horizontal" size={20} />
+            <span>More information</span>
           </button>
         </div>
       )}
