@@ -61,7 +61,7 @@ export const Table = ({ usersData, usersArgs, setUsersArgs }: Props) => {
                   <IcomoonReact
                     iconSet={iconSet}
                     icon={'more-horizontal'}
-                    size={16}
+                    size={24}
                     color={openUserId === user.id ? 'blue' : 'white'}
                   />
                 </button>
