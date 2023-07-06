@@ -58,7 +58,12 @@ export const Table = ({ usersData, usersArgs, setUsersArgs }: Props) => {
               <td>{dateConverter.fromMilliseconds(+user.dateAdded)}</td>
               <td>
                 <button onClick={() => setOpenUserId(user.id)}>
-                  <IcomoonReact iconSet={iconSet} icon={'more-horizontal'} size={16} color={'white'} />
+                  <IcomoonReact
+                    iconSet={iconSet}
+                    icon={'more-horizontal'}
+                    size={16}
+                    color={openUserId === user.id ? 'blue' : 'white'}
+                  />
                 </button>
                 <PopupForControl isOpen={openUserId === user.id} setIsOpen={setOpenUserId} userId={user.id} />
               </td>
