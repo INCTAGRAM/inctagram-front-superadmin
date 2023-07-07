@@ -16,7 +16,18 @@ type Ref = HTMLInputElement
 
 export const InputText = forwardRef<Ref, InputTextPropsType>(
   (
-    { type, fieldName, onChange, onChangeText, onKeyDown, onEnter, error, className, spanClassName, ...restProps },
+    {
+      type = 'text',
+      fieldName,
+      onChange,
+      onChangeText,
+      onKeyDown,
+      onEnter,
+      error,
+      className,
+      spanClassName,
+      ...restProps
+    },
     ref
   ) => {
     InputText.displayName = 'InputText'
@@ -38,7 +49,7 @@ export const InputText = forwardRef<Ref, InputTextPropsType>(
       <>
         <label className={`${style.inputContainer} ${finalInputClassName}`}>
           {fieldName && <span className={style.fieldName}>{fieldName}</span>}
-          <input ref={ref} type={'text'} onChange={onChangeHandler} onKeyDown={onKeyPressHandler} {...restProps} />
+          <input ref={ref} type={type} onChange={onChangeHandler} onKeyDown={onKeyPressHandler} {...restProps} />
           {error && <span className={finalSpanClassName}>{error}</span>}
         </label>
       </>
