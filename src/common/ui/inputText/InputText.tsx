@@ -1,4 +1,4 @@
-import React, { ChangeEvent, DetailedHTMLProps, forwardRef, InputHTMLAttributes, KeyboardEvent } from 'react'
+import React, { ChangeEvent, DetailedHTMLProps, forwardRef, InputHTMLAttributes, KeyboardEvent, ReactNode } from 'react'
 import style from './InputText.module.scss'
 
 // Пропсы стандартного инпута
@@ -10,6 +10,8 @@ type InputTextPropsType = DefaultInputTextPropsType & {
   onEnter?: () => void
   error?: string
   spanClassName?: string
+  children?: ReactNode
+  type?: string
 }
 
 type Ref = HTMLInputElement
@@ -26,6 +28,7 @@ export const InputText = forwardRef<Ref, InputTextPropsType>(
       error,
       className,
       spanClassName,
+      children,
       ...restProps
     },
     ref
@@ -48,8 +51,9 @@ export const InputText = forwardRef<Ref, InputTextPropsType>(
     return (
       <>
         <label className={`${style.inputContainer} ${finalInputClassName}`}>
+          {children}
           {fieldName && <span className={style.fieldName}>{fieldName}</span>}
-          <input ref={ref} type={type} onChange={onChangeHandler} onKeyDown={onKeyPressHandler} {...restProps} />
+          <input ref={ref} type={'search'} onChange={onChangeHandler} onKeyDown={onKeyPressHandler} {...restProps} />
           {error && <span className={finalSpanClassName}>{error}</span>}
         </label>
       </>
