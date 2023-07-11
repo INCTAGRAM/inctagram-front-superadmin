@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client'
 import { GetUsers } from '@/modules/usersList/queries/users'
-import { BanFilterType, SortDirectionType, UserSortFields } from '@/helpers/gql/graphql'
+import { BanFilterType, SortDirectionType, UserSortFields, UsersQuery } from '@/helpers/gql/graphql'
 import { Table } from '@/modules/usersList/components/table/Table'
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { UsersListArgsType } from '@/modules/usersList/queries/types'
@@ -17,7 +17,7 @@ export const UsersList = () => {
     sortField: UserSortFields.DateAdded,
     banFilter: BanFilterType.All,
   })
-  const { loading, data } = useQuery(GetUsers, {
+  const { loading, data = {} as UsersQuery } = useQuery(GetUsers, {
     variables: usersArgs,
   })
   const debounceValue = useDebounce<string>(searchValue as string)
@@ -34,10 +34,11 @@ export const UsersList = () => {
       <>
         <InputText
           className={styles.search}
-          type={'Search'}
+          type={'search'}
           onChange={onChangeHandler}
           value={searchValue}
           placeholder={'Search'}
+          autoFocus={true}
         >
           <IcomoonReact iconSet={iconSet} color={'#8D9094'} icon="search" size={20} className={styles.searchIcon} />
         </InputText>
@@ -45,6 +46,4 @@ export const UsersList = () => {
       </>
     )
   }
-
-  return <div>UsersList</div>
 }

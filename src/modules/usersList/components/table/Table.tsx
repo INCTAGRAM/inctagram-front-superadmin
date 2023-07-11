@@ -38,7 +38,6 @@ export const Table = ({ usersData, usersArgs, setUsersArgs }: Props) => {
       setUsersArgs({ ...usersArgs, sortField: UserSortFields.DateAdded, sortDirection: SortDirectionType.Desc })
     }
   }
-
   return (
     <table className={styles.usersTable}>
       <thead className={styles.userList}>
@@ -50,26 +49,32 @@ export const Table = ({ usersData, usersArgs, setUsersArgs }: Props) => {
         </tr>
       </thead>
       <tbody>
-        {usersData.userList.data.map((user) => {
-          return (
-            <tr key={user.id}>
-              <td>{user.id}</td>
-              <td>{user.username}</td>
-              <td>{dateConverter.fromMilliseconds(+user.dateAdded)}</td>
-              <td>
-                <button onClick={() => setOpenUserId(user.id)}>
-                  <IcomoonReact
-                    iconSet={iconSet}
-                    icon={'more-horizontal'}
-                    size={24}
-                    color={openUserId === user.id ? '#397DF6' : 'white'}
-                  />
-                </button>
-                <PopupForControl isOpen={openUserId === user.id} setIsOpen={setOpenUserId} userId={user.id} />
-              </td>
-            </tr>
-          )
-        })}
+        {usersData.userList.data.length !== 0 ? (
+          usersData.userList.data.map((user) => {
+            return (
+              <tr key={user.id}>
+                <td>{user.id}</td>
+                <td>{user.username}</td>
+                <td>{dateConverter.fromMilliseconds(+user.dateAdded)}</td>
+                <td>
+                  <button onClick={() => setOpenUserId(user.id)}>
+                    <IcomoonReact
+                      iconSet={iconSet}
+                      icon={'more-horizontal'}
+                      size={24}
+                      color={openUserId === user.id ? '#397DF6' : 'white'}
+                    />
+                  </button>
+                  <PopupForControl isOpen={openUserId === user.id} setIsOpen={setOpenUserId} userId={user.id} />
+                </td>
+              </tr>
+            )
+          })
+        ) : (
+          <tr>
+            <td>User list is empty. Change search options.</td>
+          </tr>
+        )}
       </tbody>
     </table>
   )
