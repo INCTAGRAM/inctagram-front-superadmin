@@ -22,3 +22,13 @@
     margin-right: 10px;
   }
 }
+
+.linerLoading {
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  width: 250%;
+  margin-left:-480px;
+  height: fit-content;
+  background-color: white;
+}

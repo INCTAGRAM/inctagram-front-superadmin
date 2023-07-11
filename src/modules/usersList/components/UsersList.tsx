@@ -5,10 +5,11 @@ import { Table } from '@/modules/usersList/components/table/Table'
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { UsersListArgsType } from '@/modules/usersList/queries/types'
 import { InputText } from '@/common/ui/inputText/InputText'
-import styles from './UsersList.module.scss'
 import { useDebounce } from '@/hooks/useDebounce'
 import iconSet from '@/assets/icons/selection.json'
 import IcomoonReact from 'icomoon-react'
+import { LinearProgress } from '@mui/material'
+import styles from './UsersList.module.scss'
 
 export const UsersList = () => {
   const [searchValue, setSearchValue] = useState('')
@@ -28,7 +29,12 @@ export const UsersList = () => {
   const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.currentTarget.value)
   }
-  if (loading) return <h1>Loading</h1>
+  if (loading)
+    return (
+      <div className={styles.linerLoading}>
+        <LinearProgress />
+      </div>
+    )
   if (data) {
     return (
       <>

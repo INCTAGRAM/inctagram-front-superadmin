@@ -49,8 +49,8 @@ export const Table = ({ usersData, usersArgs, setUsersArgs }: Props) => {
         </tr>
       </thead>
       <tbody>
-        {usersData.userList.data.length !== 0 ? (
-          usersData.userList.data.map((user) => {
+        {usersData?.userList?.data.length !== 0 ? (
+          usersData?.userList?.data.map((user) => {
             return (
               <tr key={user.id}>
                 <td>{user.id}</td>
@@ -65,7 +65,12 @@ export const Table = ({ usersData, usersArgs, setUsersArgs }: Props) => {
                       color={openUserId === user.id ? '#397DF6' : 'white'}
                     />
                   </button>
-                  <PopupForControl isOpen={openUserId === user.id} setIsOpen={setOpenUserId} userId={user.id} />
+                  <PopupForControl
+                    isOpen={openUserId === user.id}
+                    setIsOpen={setOpenUserId}
+                    userId={user.id}
+                    userName={user.username}
+                  />
                 </td>
               </tr>
             )

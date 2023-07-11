@@ -7,14 +7,17 @@ import { useMutation } from '@apollo/client'
 import { DELETE_USERS } from '@/modules/usersList/mutation/users'
 import { GetUsers } from '@/modules/usersList/queries/users'
 import styles from './PopupForControl.module.scss'
+import { SuccessSnackbar } from '@/common/ui/alertSnackbar/SuccessSnackbar'
 
 type PropsType = {
   isOpen: boolean
   setIsOpen: (arg: boolean) => void
-  userId: string | null
+  userId: string
+  userName: string
 }
 
-export const PopupForControl = ({ userId, setIsOpen, isOpen }: PropsType) => {
+export const PopupForControl = ({ userId, userName, setIsOpen, isOpen }: PropsType) => {
+  const [showSnackbar, setShowSnackbar] = useState(false)
   const [isOpenDeletePostPopup, setIsOpenDeletePostPopup] = useState(false)
   const [deleteUser, { loading: deleteUserLoading, error: deleteUserError }] = useMutation(DELETE_USERS, {
     refetchQueries: [
@@ -63,6 +66,7 @@ export const PopupForControl = ({ userId, setIsOpen, isOpen }: PropsType) => {
         closeActionHandler={closeDeletePostPopup}
         confirmActionHandler={deletePostHandler}
       />
+      {isOpenDeletePostPopup && <SuccessSnackbar message={`${userName} deleted successfully`} />}
     </div>
   )
 }
