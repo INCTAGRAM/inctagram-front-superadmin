@@ -1,5 +1,4 @@
 import { graphql } from '@/helpers/gql'
-import { BanFilterType } from '@/helpers/gql/graphql'
 
 export const GetUsers = graphql(`
   query users(

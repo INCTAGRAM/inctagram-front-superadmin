@@ -8,23 +8,42 @@ import { DELETE_USERS } from '@/modules/usersList/mutation/users'
 import { GetUsers } from '@/modules/usersList/queries/users'
 import styles from './PopupForControl.module.scss'
 import { SuccessSnackbar } from '@/common/ui/alertSnackbar/SuccessSnackbar'
+import { UsersListArgsType } from '@/modules/usersList/queries/types'
 
 type PropsType = {
   isOpen: boolean
   setIsOpen: (arg: boolean) => void
   userId: string
   userName: string
+  variables: UsersListArgsType
 }
-
-export const PopupForControl = ({ userId, userName, setIsOpen, isOpen }: PropsType) => {
-  const [showSnackbar, setShowSnackbar] = useState(false)
+type UserType = { __typename?: 'UserOutput'; id: string; username: string; profileLink: string; dateAdded: string }
+type UserListType = {
+  userList: {
+    __typename?: 'UserPaginationOutput'
+    totalCount: number
+    data: Array<UserType>
+  }
+}
+export const PopupForControl = ({ userId, userName, setIsOpen, isOpen, variables }: PropsType) => {
   const [isOpenDeletePostPopup, setIsOpenDeletePostPopup] = useState(false)
-  const [deleteUser, { loading: deleteUserLoading, error: deleteUserError }] = useMutation(DELETE_USERS, {
-    refetchQueries: [
-      GetUsers, // DocumentNode object parsed with gql
-      'users', // Query name
-    ],
-  })
+  const [deleteUser, { loading: deleteUserLoading, error: deleteUserError, data, called }] = useMutation<any>(
+    DELETE_USERS,
+    {
+      update: (cache, { data: { deleteUser } }) => {
+        // read the existing data from the cache
+        const { userList } = cache.readQuery<any>({ query: GetUsers, variables }) || { userList: [] }
+        // filter out the deleted user from the userList data array
+        debugger
+        const updatedData = userList?.data.filter((user: UserType) => user.id != deleteUser.id)
+        // write the updated data to the cache
+        cache.writeQuery({
+          query: GetUsers,
+          data: { userList: { ...userList, data: updatedData } },
+        })
+      },
+    }
+  )
   const popupForControlRef = useRef<HTMLDivElement>(null)
   const closePopupForControl = () => {
     setIsOpen(false)
@@ -35,10 +54,12 @@ export const PopupForControl = ({ userId, userName, setIsOpen, isOpen }: PropsTy
   const closeDeletePostPopup = () => {
     setIsOpenDeletePostPopup(false)
     closePopupForControl()
+    debugger
   }
 
   const deletePostHandler = () => {
     userId && deleteUser({ variables: { input: { id: userId } } })
+    closeDeletePostPopup()
   }
 
   return (
@@ -66,7 +87,7 @@ export const PopupForControl = ({ userId, userName, setIsOpen, isOpen }: PropsTy
         closeActionHandler={closeDeletePostPopup}
         confirmActionHandler={deletePostHandler}
       />
-      {isOpenDeletePostPopup && <SuccessSnackbar message={`${userName} deleted successfully`} />}
+      {called && !deleteUserError && <SuccessSnackbar message={`${userName} deleted successfully`} />}
     </div>
   )
 }

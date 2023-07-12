@@ -18,7 +18,7 @@ export const UsersList = () => {
     sortField: UserSortFields.DateAdded,
     banFilter: BanFilterType.All,
   })
-  const { loading, data = {} as UsersQuery } = useQuery(GetUsers, {
+  const { loading, data = {} as UsersQuery } = useQuery<UsersQuery>(GetUsers, {
     variables: usersArgs,
   })
   const debounceValue = useDebounce<string>(searchValue as string)
@@ -48,7 +48,7 @@ export const UsersList = () => {
         >
           <IcomoonReact iconSet={iconSet} color={'#8D9094'} icon="search" size={20} className={styles.searchIcon} />
         </InputText>
-        <Table usersData={data} usersArgs={usersArgs} setUsersArgs={setUsersArgs} />
+        <Table usersData={data} usersArgs={usersArgs} setUsersArgs={setUsersArgs} variables={usersArgs} />
       </>
     )
   }

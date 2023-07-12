@@ -7,13 +7,14 @@ import { PopupForControl } from '@/modules/usersList/components/popupForControl/
 import { useState } from 'react'
 import styles from './Table.module.scss'
 
-type Props = {
+type PropsType = {
   usersData: UsersQuery
   usersArgs: UsersListArgsType
   setUsersArgs: (usersListArgs: UsersListArgsType) => void
+  variables: UsersListArgsType
 }
 
-export const Table = ({ usersData, usersArgs, setUsersArgs }: Props) => {
+export const Table = ({ usersData, usersArgs, setUsersArgs, variables }: PropsType) => {
   const [openUserId, setOpenUserId] = useState<string | null | boolean>(null)
   const sortUsername = () => {
     if (usersArgs.sortField === UserSortFields.Username) {
@@ -70,6 +71,7 @@ export const Table = ({ usersData, usersArgs, setUsersArgs }: Props) => {
                     setIsOpen={setOpenUserId}
                     userId={user.id}
                     userName={user.username}
+                    variables={variables}
                   />
                 </td>
               </tr>
