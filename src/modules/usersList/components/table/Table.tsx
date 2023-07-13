@@ -4,8 +4,9 @@ import IcomoonReact from 'icomoon-react'
 import iconSet from '@/assets/icons/selection.json'
 import { UsersListArgsType } from '@/modules/usersList/queries/types'
 import { PopupForControl } from '@/modules/usersList/components/popupForControl/PopupForControl'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import styles from './Table.module.scss'
+import { SuccessSnackbar } from '@/common/ui/alertSnackbar/SuccessSnackbar'
 
 type PropsType = {
   usersData: UsersQuery
@@ -16,6 +17,7 @@ type PropsType = {
 
 export const Table = ({ usersData, usersArgs, setUsersArgs, variables }: PropsType) => {
   const [openUserId, setOpenUserId] = useState<string | null | boolean>(null)
+  const [deleteMutationName, setDeleteMutationName] = useState('')
   const sortUsername = () => {
     if (usersArgs.sortField === UserSortFields.Username) {
       setUsersArgs({
@@ -40,49 +42,55 @@ export const Table = ({ usersData, usersArgs, setUsersArgs, variables }: PropsTy
     }
   }
   return (
-    <table className={styles.usersTable}>
-      <thead className={styles.userList}>
-        <tr>
-          <th>User ID</th>
-          <th onClick={sortUsername}>Username</th>
-          <th onClick={sortDate}>Date added</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        {usersData?.userList?.data.length !== 0 ? (
-          usersData?.userList?.data.map((user) => {
-            return (
-              <tr key={user.id}>
-                <td>{user.id}</td>
-                <td>{user.username}</td>
-                <td>{dateConverter.fromMilliseconds(+user.dateAdded)}</td>
-                <td>
-                  <button onClick={() => setOpenUserId(user.id)}>
-                    <IcomoonReact
-                      iconSet={iconSet}
-                      icon={'more-horizontal'}
-                      size={24}
-                      color={openUserId === user.id ? '#397DF6' : 'white'}
-                    />
-                  </button>
-                  <PopupForControl
-                    isOpen={openUserId === user.id}
-                    setIsOpen={setOpenUserId}
-                    userId={user.id}
-                    userName={user.username}
-                    variables={variables}
-                  />
-                </td>
-              </tr>
-            )
-          })
-        ) : (
+    <>
+      <table className={styles.usersTable}>
+        <thead className={styles.userList}>
           <tr>
-            <td>User list is empty. Change search options.</td>
+            <th>User ID</th>
+            <th onClick={sortUsername}>Username</th>
+            <th onClick={sortDate}>Date added</th>
+            <th></th>
           </tr>
-        )}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {usersData?.userList?.data.length !== 0 ? (
+            usersData?.userList?.data.map((user) => {
+              return (
+                <tr key={user.id}>
+                  <td>{user.id}</td>
+                  <td>{user.username}</td>
+                  <td>{dateConverter.fromMilliseconds(+user.dateAdded)}</td>
+                  <td>
+                    <button onClick={() => setOpenUserId(user.id)}>
+                      <IcomoonReact
+                        iconSet={iconSet}
+                        icon={'more-horizontal'}
+                        size={24}
+                        color={openUserId === user.id ? '#397DF6' : 'white'}
+                      />
+                    </button>
+                    <PopupForControl
+                      isOpen={openUserId === user.id}
+                      setIsOpen={setOpenUserId}
+                      userId={user.id}
+                      userName={user.username}
+                      setDeleteMutationName={setDeleteMutationName}
+                      variables={variables}
+                    />
+                  </td>
+                </tr>
+              )
+            })
+          ) : (
+            <tr>
+              <td>User list is empty. Change search options.</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+      {deleteMutationName !== '' && (
+        <SuccessSnackbar message={`User ${deleteMutationName} deleted successfully`} time={3000} />
+      )}
+    </>
   )
 }

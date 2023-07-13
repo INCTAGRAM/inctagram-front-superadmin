@@ -1,60 +1,42 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useClosePopupClickDocument } from '@/hooks/useClosePopupClickDocument'
 import iconSet from '@/assets/icons/selection.json'
 import IcomoonReact from 'icomoon-react'
 import { ConfirmActionPopup } from '@/common/ui/popup/confirmActionPopup/ConfirmActionPopup'
-import { useMutation } from '@apollo/client'
-import { DELETE_USERS } from '@/modules/usersList/mutation/users'
-import { GetUsers } from '@/modules/usersList/queries/users'
-import styles from './PopupForControl.module.scss'
-import { SuccessSnackbar } from '@/common/ui/alertSnackbar/SuccessSnackbar'
 import { UsersListArgsType } from '@/modules/usersList/queries/types'
+import styles from './PopupForControl.module.scss'
+import { useDeleteMutation } from '@/hooks/useDeleteMutation'
 
-type PropsType = {
+export type PopupForControlType = {
   isOpen: boolean
   setIsOpen: (arg: boolean) => void
   userId: string
-  userName: string
+  setDeleteMutationName: (arg: string) => void
   variables: UsersListArgsType
+  userName: string
 }
-type UserType = { __typename?: 'UserOutput'; id: string; username: string; profileLink: string; dateAdded: string }
-type UserListType = {
-  userList: {
-    __typename?: 'UserPaginationOutput'
-    totalCount: number
-    data: Array<UserType>
-  }
-}
-export const PopupForControl = ({ userId, userName, setIsOpen, isOpen, variables }: PropsType) => {
+
+export const PopupForControl = ({
+  userId,
+  userName,
+  setDeleteMutationName,
+  setIsOpen,
+  isOpen,
+  variables,
+}: PopupForControlType) => {
   const [isOpenDeletePostPopup, setIsOpenDeletePostPopup] = useState(false)
-  const [deleteUser, { loading: deleteUserLoading, error: deleteUserError, data, called }] = useMutation<any>(
-    DELETE_USERS,
-    {
-      update: (cache, { data: { deleteUser } }) => {
-        // read the existing data from the cache
-        const { userList } = cache.readQuery<any>({ query: GetUsers, variables }) || { userList: [] }
-        // filter out the deleted user from the userList data array
-        debugger
-        const updatedData = userList?.data.filter((user: UserType) => user.id != deleteUser.id)
-        // write the updated data to the cache
-        cache.writeQuery({
-          query: GetUsers,
-          data: { userList: { ...userList, data: updatedData } },
-        })
-      },
-    }
-  )
+
   const popupForControlRef = useRef<HTMLDivElement>(null)
   const closePopupForControl = () => {
     setIsOpen(false)
   }
+  const deleteUser = useDeleteMutation({ variables, setDeleteMutationName, userName })
 
   useClosePopupClickDocument(popupForControlRef, isOpen, closePopupForControl, [isOpen])
 
   const closeDeletePostPopup = () => {
     setIsOpenDeletePostPopup(false)
     closePopupForControl()
-    debugger
   }
 
   const deletePostHandler = () => {
@@ -87,7 +69,6 @@ export const PopupForControl = ({ userId, userName, setIsOpen, isOpen, variables
         closeActionHandler={closeDeletePostPopup}
         confirmActionHandler={deletePostHandler}
       />
-      {called && !deleteUserError && <SuccessSnackbar message={`${userName} deleted successfully`} />}
     </div>
   )
 }
