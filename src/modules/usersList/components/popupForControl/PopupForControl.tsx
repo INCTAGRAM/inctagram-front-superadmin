@@ -1,28 +1,29 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { useClosePopupClickDocument } from '@/hooks/useClosePopupClickDocument'
 import iconSet from '@/assets/icons/selection.json'
 import IcomoonReact from 'icomoon-react'
 import { ConfirmActionPopup } from '@/common/ui/popup/confirmActionPopup/ConfirmActionPopup'
-import { UsersListArgsType } from '@/modules/usersList/queries/types'
 import styles from './PopupForControl.module.scss'
-import { useDeleteMutation } from '@/hooks/useDeleteMutation'
+import { DeleteUserInput } from '@/hooks/useDeleteMutation'
+
+type DeleteUserFunction = (options: { variables: DeleteUserInput }) => Promise<any>
 
 export type PopupForControlType = {
   isOpen: boolean
   setIsOpen: (arg: boolean) => void
+  deleteUser: DeleteUserFunction
   userId: string
   setDeleteMutationName: (arg: string) => void
-  variables: UsersListArgsType
   userName: string
 }
 
 export const PopupForControl = ({
   userId,
   userName,
-  setDeleteMutationName,
   setIsOpen,
   isOpen,
-  variables,
+  deleteUser,
+  setDeleteMutationName,
 }: PopupForControlType) => {
   const [isOpenDeletePostPopup, setIsOpenDeletePostPopup] = useState(false)
 
@@ -30,7 +31,6 @@ export const PopupForControl = ({
   const closePopupForControl = () => {
     setIsOpen(false)
   }
-  const deleteUser = useDeleteMutation({ variables, setDeleteMutationName, userName })
 
   useClosePopupClickDocument(popupForControlRef, isOpen, closePopupForControl, [isOpen])
 
@@ -42,6 +42,7 @@ export const PopupForControl = ({
   const deletePostHandler = () => {
     userId && deleteUser({ variables: { input: { id: userId } } })
     closeDeletePostPopup()
+    setDeleteMutationName(userName)
   }
 
   return (

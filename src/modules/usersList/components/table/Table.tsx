@@ -7,6 +7,8 @@ import { PopupForControl } from '@/modules/usersList/components/popupForControl/
 import React, { useState } from 'react'
 import styles from './Table.module.scss'
 import { SuccessSnackbar } from '@/common/ui/alertSnackbar/SuccessSnackbar'
+import { useDeleteMutation } from '@/hooks/useDeleteMutation'
+import { ErrorSnackbar } from '@/common/ui/alertSnackbar/ErrorSnackbar'
 
 type PropsType = {
   usersData: UsersQuery
@@ -18,6 +20,9 @@ type PropsType = {
 export const Table = ({ usersData, usersArgs, setUsersArgs, variables }: PropsType) => {
   const [openUserId, setOpenUserId] = useState<string | null | boolean>(null)
   const [deleteMutationName, setDeleteMutationName] = useState('')
+
+  const { deleteUser, deleteUserError, called } = useDeleteMutation(variables)
+
   const sortUsername = () => {
     if (usersArgs.sortField === UserSortFields.Username) {
       setUsersArgs({
@@ -73,9 +78,9 @@ export const Table = ({ usersData, usersArgs, setUsersArgs, variables }: PropsTy
                       isOpen={openUserId === user.id}
                       setIsOpen={setOpenUserId}
                       userId={user.id}
-                      userName={user.username}
+                      deleteUser={deleteUser}
                       setDeleteMutationName={setDeleteMutationName}
-                      variables={variables}
+                      userName={user.username}
                     />
                   </td>
                 </tr>
@@ -88,9 +93,10 @@ export const Table = ({ usersData, usersArgs, setUsersArgs, variables }: PropsTy
           )}
         </tbody>
       </table>
-      {deleteMutationName !== '' && (
+      {deleteMutationName !== '' && called && (
         <SuccessSnackbar message={`User ${deleteMutationName} deleted successfully`} time={3000} />
       )}
+      {deleteUserError && called && <ErrorSnackbar error={deleteUserError?.message} time={3000} />}
     </>
   )
 }

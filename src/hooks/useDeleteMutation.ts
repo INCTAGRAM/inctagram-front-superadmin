@@ -1,8 +1,7 @@
 import { useMutation } from '@apollo/client'
 import { DELETE_USERS } from '@/modules/usersList/mutation/users'
 import { GetUsers } from '@/modules/usersList/queries/users'
-import { useEffect } from 'react'
-import { PopupForControlType } from '@/modules/usersList/components/popupForControl/PopupForControl'
+import { UsersListArgsType } from '@/modules/usersList/queries/types'
 
 export type UserType = {
   __typename?: 'UserOutput'
@@ -25,8 +24,7 @@ export interface DeleteUserInput {
   }
 }
 
-type DeleteMutationPropsType = Pick<PopupForControlType, 'setDeleteMutationName' | 'variables' | 'userName'>
-export const useDeleteMutation = ({ variables, setDeleteMutationName, userName }: DeleteMutationPropsType) => {
+export const useDeleteMutation = (variables: UsersListArgsType) => {
   const [deleteUser, { error: deleteUserError, called }] = useMutation<any, DeleteUserInput>(DELETE_USERS, {
     update: (cache, { data: { deleteUser } }) => {
       // read the existing data from the cache
@@ -42,11 +40,5 @@ export const useDeleteMutation = ({ variables, setDeleteMutationName, userName }
     },
   })
 
-  useEffect(() => {
-    if (called && !deleteUserError) {
-      setDeleteMutationName(userName)
-    }
-  }, [called, deleteUserError])
-
-  return deleteUser
+  return { deleteUser, deleteUserError, called }
 }
