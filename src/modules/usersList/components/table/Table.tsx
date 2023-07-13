@@ -22,7 +22,6 @@ export const Table = ({ usersData, usersArgs, setUsersArgs, variables }: PropsTy
   const [deleteMutationName, setDeleteMutationName] = useState('')
 
   const { deleteUser, deleteUserError, called } = useDeleteMutation(variables)
-
   const sortUsername = () => {
     if (usersArgs.sortField === UserSortFields.Username) {
       setUsersArgs({
