@@ -65,8 +65,9 @@ export const Table = ({ usersData, usersArgs, setUsersArgs, variables }: PropsTy
                   <td>{user.username}</td>
                   <td>{dateConverter.fromMilliseconds(+user.dateAdded)}</td>
                   <td>
-                    <button onClick={() => setOpenUserId(user.id)}>
+                    <button>
                       <IcomoonReact
+                        onClick={() => setOpenUserId(user.id)}
                         iconSet={iconSet}
                         icon={'more-horizontal'}
                         size={24}
