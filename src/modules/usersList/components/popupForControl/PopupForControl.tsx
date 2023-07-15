@@ -13,7 +13,7 @@ export type PopupForControlType = {
   setIsOpen: (arg: boolean) => void
   deleteUser: DeleteUserFunction
   userId: string
-  setDeleteMutationName: (arg: string) => void
+  setChosenName: (arg: string) => void
   userName: string
 }
 
@@ -23,9 +23,10 @@ export const PopupForControl = ({
   setIsOpen,
   isOpen,
   deleteUser,
-  setDeleteMutationName,
+  setChosenName,
 }: PopupForControlType) => {
-  const [isOpenDeletePostPopup, setIsOpenDeletePostPopup] = useState(false)
+  const [isOpenDeleteUsersPopup, setIsOpenDeleteUsersPopup] = useState(false)
+  const [isOpenBlockingUsersPopup, setIsOpenBlockingUsersPopup] = useState(false)
 
   const popupForControlRef = useRef<HTMLDivElement>(null)
   const closePopupForControl = () => {
@@ -34,26 +35,32 @@ export const PopupForControl = ({
 
   useClosePopupClickDocument(popupForControlRef, isOpen, closePopupForControl, [isOpen])
 
-  const closeDeletePostPopup = () => {
-    setIsOpenDeletePostPopup(false)
-    closePopupForControl()
+  const closePopup = () => {
+    setIsOpenDeleteUsersPopup(false)
+    setIsOpenBlockingUsersPopup(false)
   }
 
-  const deletePostHandler = () => {
+  const deleteUserHandler = () => {
     userId && deleteUser({ variables: { input: { id: userId } } })
-    closeDeletePostPopup()
-    setDeleteMutationName(userName)
+    closePopup()
+    setChosenName(userName)
+  }
+
+  const banUserHandler = () => {
+    // userId && deleteUser({ variables: { input: { id: userId } } })
+    closePopup()
+    setChosenName(userName)
   }
 
   return (
     <div className={styles.topPanel} ref={popupForControlRef}>
       {isOpen && (
         <div className={styles.controlElements}>
-          <button onClick={() => setIsOpenDeletePostPopup(true)}>
+          <button onClick={() => setIsOpenDeleteUsersPopup(true)}>
             <IcomoonReact iconSet={iconSet} color={'#fff'} icon="person-remove-outline" size={20} />
             <span>Delete User</span>
           </button>
-          <button>
+          <button onClick={() => setIsOpenBlockingUsersPopup(true)}>
             <IcomoonReact iconSet={iconSet} color={'#fff'} icon="Block" size={20} />
             <span>Ban in the system</span>
           </button>
@@ -64,11 +71,19 @@ export const PopupForControl = ({
         </div>
       )}
       <ConfirmActionPopup
-        show={isOpenDeletePostPopup}
-        title={'Delete User'}
-        text={'Are you sure you want to delete this user?'}
-        closeActionHandler={closeDeletePostPopup}
-        confirmActionHandler={deletePostHandler}
+        show={isOpenDeleteUsersPopup}
+        title={'Delete user'}
+        text={`Are you sure to delete this user, ${userName} ?`}
+        closeActionHandler={closePopup}
+        confirmActionHandler={deleteUserHandler}
+      />
+      <ConfirmActionPopup
+        block={true}
+        show={isOpenBlockingUsersPopup}
+        title={'Ban user'}
+        text={`Are you sure to ban this user, ${userName} ?`}
+        closeActionHandler={closePopup}
+        confirmActionHandler={banUserHandler}
       />
     </div>
   )

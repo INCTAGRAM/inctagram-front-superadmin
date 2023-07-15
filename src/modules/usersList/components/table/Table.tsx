@@ -19,7 +19,7 @@ type PropsType = {
 
 export const Table = ({ usersData, usersArgs, setUsersArgs, variables }: PropsType) => {
   const [openUserId, setOpenUserId] = useState<string | null | boolean>(null)
-  const [deleteMutationName, setDeleteMutationName] = useState('')
+  const [chosenName, setChosenName] = useState('')
 
   const { deleteUser, deleteUserError, called } = useDeleteMutation(variables)
   const sortUsername = () => {
@@ -79,7 +79,7 @@ export const Table = ({ usersData, usersArgs, setUsersArgs, variables }: PropsTy
                       setIsOpen={setOpenUserId}
                       userId={user.id}
                       deleteUser={deleteUser}
-                      setDeleteMutationName={setDeleteMutationName}
+                      setChosenName={setChosenName}
                       userName={user.username}
                     />
                   </td>
@@ -93,8 +93,8 @@ export const Table = ({ usersData, usersArgs, setUsersArgs, variables }: PropsTy
           )}
         </tbody>
       </table>
-      {deleteMutationName !== '' && called && (
-        <SuccessSnackbar message={`User ${deleteMutationName} deleted successfully`} time={3000} />
+      {chosenName !== '' && called && (
+        <SuccessSnackbar message={`User ${chosenName} deleted successfully`} time={3000} />
       )}
       {deleteUserError && called && <ErrorSnackbar error={deleteUserError?.message} time={3000} />}
     </>

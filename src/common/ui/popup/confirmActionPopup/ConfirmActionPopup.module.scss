@@ -3,6 +3,7 @@
 .wrapperPopup {
   width: 378px;
   padding: 24px;
+  white-space: normal;
 
   .wrapperChildren {
     position: relative;
@@ -19,6 +20,10 @@
       width: 96px;
       margin-left: 24px;
       border: 1px solid $primary_500;
+
+      &:first-child {
+        margin-left: 0;
+      }
 
       &.btnYes {
         background: transparent;
