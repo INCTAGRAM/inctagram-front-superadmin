@@ -9,6 +9,7 @@ import styles from './Table.module.scss'
 import { SuccessSnackbar } from '@/common/ui/alertSnackbar/SuccessSnackbar'
 import { useDeleteMutation } from '@/hooks/useDeleteMutation'
 import { ErrorSnackbar } from '@/common/ui/alertSnackbar/ErrorSnackbar'
+import { useBanMutation } from '@/hooks/useBanMutation'
 
 type PropsType = {
   usersData: UsersQuery
@@ -21,7 +22,8 @@ export const Table = ({ usersData, usersArgs, setUsersArgs, variables }: PropsTy
   const [openUserId, setOpenUserId] = useState<string | null | boolean>(null)
   const [chosenName, setChosenName] = useState('')
 
-  const { deleteUser, deleteUserError, called } = useDeleteMutation(variables)
+  const { deleteUser, deleteUserError, called: deleteUsersCalled } = useDeleteMutation(variables)
+  const { banUser, banUserError, banUsersCalled } = useBanMutation(variables)
   const sortUsername = () => {
     if (usersArgs.sortField === UserSortFields.Username) {
       setUsersArgs({
@@ -61,7 +63,7 @@ export const Table = ({ usersData, usersArgs, setUsersArgs, variables }: PropsTy
             usersData?.userList?.data.map((user) => {
               return (
                 <tr key={user.id}>
-                  <td>{user.id}</td>
+                  <td> {user.id}</td>
                   <td>{user.username}</td>
                   <td>{dateConverter.fromMilliseconds(+user.dateAdded)}</td>
                   <td>
@@ -79,6 +81,7 @@ export const Table = ({ usersData, usersArgs, setUsersArgs, variables }: PropsTy
                       setIsOpen={setOpenUserId}
                       userId={user.id}
                       deleteUser={deleteUser}
+                      banUser={banUser}
                       setChosenName={setChosenName}
                       userName={user.username}
                     />
@@ -93,10 +96,16 @@ export const Table = ({ usersData, usersArgs, setUsersArgs, variables }: PropsTy
           )}
         </tbody>
       </table>
-      {chosenName !== '' && called && (
-        <SuccessSnackbar message={`User ${chosenName} deleted successfully`} time={3000} />
+      {chosenName !== '' && (deleteUsersCalled || banUsersCalled) && (
+        <SuccessSnackbar
+          message={`User ${chosenName} ${deleteUsersCalled ? 'deleted' : 'ban'} successfully`}
+          time={3000}
+        />
       )}
-      {deleteUserError && called && <ErrorSnackbar error={deleteUserError?.message} time={3000} />}
+      {(deleteUserError && deleteUsersCalled) ||
+        (banUserError && banUsersCalled && (
+          <ErrorSnackbar error={deleteUserError ? deleteUserError?.message : banUserError.message} time={3000} />
+        ))}
     </>
   )
 }

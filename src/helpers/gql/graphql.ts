@@ -68,7 +68,7 @@ export type Mutation = {
   __typename?: 'Mutation'
   banUser: Scalars['Boolean']['output']
   createAdmin: Admin
-  deleteUser: Scalars['Boolean']['output']
+  deleteUser?: Maybe<Scalars['ID']['output']>
   unBanUser: Scalars['Boolean']['output']
 }
 
@@ -241,7 +241,13 @@ export type DeleteUsersMutationVariables = Exact<{
   input: DeleteUserInput
 }>
 
-export type DeleteUsersMutation = { __typename?: 'Mutation'; deleteUser: boolean }
+export type DeleteUsersMutation = { __typename?: 'Mutation'; deleteUser?: string | null }
+
+export type BanUsersMutationVariables = Exact<{
+  input: BanUserInput
+}>
+
+export type BanUsersMutation = { __typename?: 'Mutation'; banUser: boolean }
 
 export type UsersQueryVariables = Exact<{
   pageSize?: Scalars['Int']['input']
@@ -294,6 +300,39 @@ export const DeleteUsersDocument = {
     },
   ],
 } as unknown as DocumentNode<DeleteUsersMutation, DeleteUsersMutationVariables>
+export const BanUsersDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'BanUsers' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'input' } },
+          type: { kind: 'NonNullType', type: { kind: 'NamedType', name: { kind: 'Name', value: 'BanUserInput' } } },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'banUser' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'input' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'input' } },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<BanUsersMutation, BanUsersMutationVariables>
 export const UsersDocument = {
   kind: 'Document',
   definitions: [

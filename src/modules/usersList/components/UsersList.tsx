@@ -18,7 +18,11 @@ export const UsersList = () => {
     sortField: UserSortFields.DateAdded,
     banFilter: BanFilterType.All,
   })
-  const { loading, data = {} as UsersQuery } = useQuery<UsersQuery>(GetUsers, {
+  const {
+    loading,
+    data = {} as UsersQuery,
+    error,
+  } = useQuery<UsersQuery>(GetUsers, {
     variables: usersArgs,
   })
   const debounceValue = useDebounce<string>(searchValue as string)

@@ -5,15 +5,18 @@ import IcomoonReact from 'icomoon-react'
 import { ConfirmActionPopup } from '@/common/ui/popup/confirmActionPopup/ConfirmActionPopup'
 import styles from './PopupForControl.module.scss'
 import { DeleteUserInput } from '@/hooks/useDeleteMutation'
+import { BanUserInput } from '@/hooks/useBanMutation'
 
 type DeleteUserFunction = (options: { variables: DeleteUserInput }) => Promise<any>
+type BanUserFunction = (options: { variables: BanUserInput }) => Promise<any>
 
 export type PopupForControlType = {
   isOpen: boolean
   setIsOpen: (arg: boolean) => void
-  deleteUser: DeleteUserFunction
+  deleteUser?: DeleteUserFunction
+  banUser?: BanUserFunction
   userId: string
-  setChosenName: (arg: string) => void
+  setChosenName?: (arg: string) => void
   userName: string
 }
 
@@ -23,10 +26,12 @@ export const PopupForControl = ({
   setIsOpen,
   isOpen,
   deleteUser,
+  banUser,
   setChosenName,
 }: PopupForControlType) => {
   const [isOpenDeleteUsersPopup, setIsOpenDeleteUsersPopup] = useState(false)
   const [isOpenBlockingUsersPopup, setIsOpenBlockingUsersPopup] = useState(false)
+  const [chosenReason, setChosenReason] = useState('')
 
   const popupForControlRef = useRef<HTMLDivElement>(null)
   const closePopupForControl = () => {
@@ -41,15 +46,15 @@ export const PopupForControl = ({
   }
 
   const deleteUserHandler = () => {
-    userId && deleteUser({ variables: { input: { id: userId } } })
+    deleteUser && userId && deleteUser({ variables: { input: { id: userId } } })
+    setChosenName && setChosenName(userName)
     closePopup()
-    setChosenName(userName)
   }
 
   const banUserHandler = () => {
-    // userId && deleteUser({ variables: { input: { id: userId } } })
+    banUser && userId && banUser({ variables: { input: { id: userId, banReason: chosenReason } } })
     closePopup()
-    setChosenName(userName)
+    setChosenName && setChosenName(userName)
   }
 
   return (
@@ -84,6 +89,7 @@ export const PopupForControl = ({
         text={`Are you sure to ban this user, ${userName} ?`}
         closeActionHandler={closePopup}
         confirmActionHandler={banUserHandler}
+        setChosenReason={setChosenReason}
       />
     </div>
   )

@@ -15,6 +15,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
 const documents = {
   '\n  mutation DeleteUsers($input: DeleteUserInput!) {\n    deleteUser(input: $input)\n  }\n':
     types.DeleteUsersDocument,
+  '\n  mutation BanUsers($input: BanUserInput!) {\n    banUser(input: $input)\n  }\n': types.BanUsersDocument,
   '\n  query users(\n    $pageSize: Int! = 10\n    $page: Int! = 1\n    $sortDirection: SortDirectionType! = Desc\n    $searchUsernameTerm: String! = ""\n    $sortField: UserSortFields! = DateAdded\n    $banFilter: BanFilterType!\n  ) {\n    userList(\n      pageSize: $pageSize\n      page: $page\n      sortDirection: $sortDirection\n      searchUsernameTerm: $searchUsernameTerm\n      sortField: $sortField\n      banFilter: $banFilter\n    ) {\n      data {\n        id\n        username\n        profileLink\n        dateAdded\n      }\n      totalCount\n    }\n  }\n':
     types.UsersDocument,
 }
@@ -39,6 +40,12 @@ export function graphql(source: string): unknown
 export function graphql(
   source: '\n  mutation DeleteUsers($input: DeleteUserInput!) {\n    deleteUser(input: $input)\n  }\n'
 ): (typeof documents)['\n  mutation DeleteUsers($input: DeleteUserInput!) {\n    deleteUser(input: $input)\n  }\n']
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation BanUsers($input: BanUserInput!) {\n    banUser(input: $input)\n  }\n'
+): (typeof documents)['\n  mutation BanUsers($input: BanUserInput!) {\n    banUser(input: $input)\n  }\n']
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
