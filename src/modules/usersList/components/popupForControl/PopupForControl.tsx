@@ -32,6 +32,7 @@ export const PopupForControl = ({
   const [isOpenDeleteUsersPopup, setIsOpenDeleteUsersPopup] = useState(false)
   const [isOpenBlockingUsersPopup, setIsOpenBlockingUsersPopup] = useState(false)
   const [chosenReason, setChosenReason] = useState('')
+  console.log(chosenReason)
 
   const popupForControlRef = useRef<HTMLDivElement>(null)
   const closePopupForControl = () => {
@@ -41,8 +42,10 @@ export const PopupForControl = ({
   useClosePopupClickDocument(popupForControlRef, isOpen, closePopupForControl, [isOpen])
 
   const closePopup = () => {
+    setChosenReason('')
     setIsOpenDeleteUsersPopup(false)
     setIsOpenBlockingUsersPopup(false)
+    setIsOpen(false)
   }
 
   const deleteUserHandler = () => {
@@ -53,8 +56,8 @@ export const PopupForControl = ({
 
   const banUserHandler = () => {
     banUser && userId && banUser({ variables: { input: { id: userId, banReason: chosenReason } } })
-    closePopup()
     setChosenName && setChosenName(userName)
+    closePopup()
   }
 
   return (
@@ -90,6 +93,7 @@ export const PopupForControl = ({
         closeActionHandler={closePopup}
         confirmActionHandler={banUserHandler}
         setChosenReason={setChosenReason}
+        chosenReason={chosenReason}
       />
     </div>
   )

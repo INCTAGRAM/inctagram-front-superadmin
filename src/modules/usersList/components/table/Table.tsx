@@ -4,7 +4,7 @@ import IcomoonReact from 'icomoon-react'
 import iconSet from '@/assets/icons/selection.json'
 import { UsersListArgsType } from '@/modules/usersList/queries/types'
 import { PopupForControl } from '@/modules/usersList/components/popupForControl/PopupForControl'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './Table.module.scss'
 import { SuccessSnackbar } from '@/common/ui/alertSnackbar/SuccessSnackbar'
 import { useDeleteMutation } from '@/hooks/useDeleteMutation'
@@ -35,7 +35,6 @@ export const Table = ({ usersData, usersArgs, setUsersArgs, variables }: PropsTy
       setUsersArgs({ ...usersArgs, sortField: UserSortFields.Username, sortDirection: SortDirectionType.Asc })
     }
   }
-
   const sortDate = () => {
     if (usersArgs.sortField === UserSortFields.DateAdded) {
       setUsersArgs({
@@ -47,6 +46,7 @@ export const Table = ({ usersData, usersArgs, setUsersArgs, variables }: PropsTy
       setUsersArgs({ ...usersArgs, sortField: UserSortFields.DateAdded, sortDirection: SortDirectionType.Desc })
     }
   }
+
   return (
     <>
       <table className={styles.usersTable}>

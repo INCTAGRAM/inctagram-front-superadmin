@@ -14,6 +14,7 @@ type CloseDeletePopupType = {
   confirmTextButton?: string
   closeTextButton?: string
   setChosenReason?: (reason: string) => void
+  chosenReason?: string
 }
 
 export const ConfirmActionPopup = ({
@@ -26,6 +27,7 @@ export const ConfirmActionPopup = ({
   confirmTextButton,
   closeTextButton,
   setChosenReason,
+  chosenReason,
 }: CloseDeletePopupType) => {
   const handleChangeHandler = (reason: string) => {
     setChosenReason && setChosenReason(reason)
@@ -34,9 +36,13 @@ export const ConfirmActionPopup = ({
     <Popup title={title} show={show} modalOnClick={closeActionHandler}>
       <div className={styles.wrapperPopup}>
         <p className={styles.wrapperChildren}>{text}</p>
-        {block ? <ClassicSelect handleChange={(reason) => handleChangeHandler(reason)} /> : ''}
+        {block && <ClassicSelect chosenReason={chosenReason!} handleChange={(reason) => handleChangeHandler(reason)} />}
         <div className={styles.wrapperButton}>
-          <Button onClick={confirmActionHandler} className={`${styles.button} ${styles.btnYes}`}>
+          <Button
+            onClick={confirmActionHandler}
+            className={`${styles.button} ${styles.btnYes}`}
+            disabled={chosenReason === ''}
+          >
             {confirmTextButton ? confirmTextButton : 'Yes'}
           </Button>
           <Button onClick={closeActionHandler} className={styles.button}>

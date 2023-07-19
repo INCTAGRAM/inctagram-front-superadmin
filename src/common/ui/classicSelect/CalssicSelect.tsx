@@ -1,35 +1,66 @@
-import React from 'react'
-import { InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material'
+import React, { ChangeEvent, useEffect, useState } from 'react'
+import { InputLabel, MenuItem, Select, SelectChangeEvent, TextareaAutosize } from '@mui/material'
 import FormControl from '@mui/material/FormControl'
-import style from './ClassicSelect.module.css'
+import style from './ClassicSelect.module.scss'
 
 type PropsType = {
-  value?: string
   handleChange: (value: string) => void
+  chosenReason: string
 }
 
-export const ClassicSelect = ({ value, handleChange }: PropsType) => {
+export const ClassicSelect = ({ handleChange, chosenReason }: PropsType) => {
+  const [selectValue, setSelectValue] = useState('')
+  const [textareaValue, setTextareaValue] = useState('')
   const onChangeHandler = (event: SelectChangeEvent) => {
-    handleChange(event.target.value)
+    setSelectValue(event.target.value)
   }
+  console.log(selectValue, textareaValue)
+  const onChangeTextareaHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setTextareaValue(event.target.value)
+  }
+  useEffect(() => {
+    if (selectValue === 'Another reason') {
+      handleChange(textareaValue)
+    } else {
+      handleChange(selectValue)
+    }
+  }, [textareaValue, selectValue])
 
+  useEffect(() => {
+    if (chosenReason === '') {
+      setSelectValue('')
+      setTextareaValue('')
+    }
+  }, [chosenReason])
   return (
     <FormControl fullWidth className={style.wrapperSelect}>
-      <InputLabel size={'small'} className={style.label} id="label" sx={{ textAlign: 'center' }}>
-        Reason for ban
-      </InputLabel>
-      <Select
-        className={style.select}
-        value={value}
-        onChange={onChangeHandler}
-        size="small"
-        label="reason for ban"
-        labelId="label"
-      >
-        <MenuItem value={'Bad behavior'}>Bad behavior</MenuItem>
-        <MenuItem value={'Adverstising placement'}>Adverstising placement</MenuItem>
-        <MenuItem value={'Another reason'}>Another reason</MenuItem>
-      </Select>
+      {selectValue !== 'Another reason' ? (
+        <>
+          <InputLabel size={'small'} className={style.label} id="label" sx={{ textAlign: 'center' }}>
+            Reason for ban
+          </InputLabel>
+          <Select
+            value={selectValue}
+            className={style.select}
+            onChange={onChangeHandler}
+            size="small"
+            label="reason for ban"
+            labelId="label"
+          >
+            <MenuItem value={'Bad behavior'}>Bad behavior</MenuItem>
+            <MenuItem value={'Advertising placement'}>Advertising placement</MenuItem>
+            <MenuItem value={'Another reason'}>Another reason</MenuItem>
+          </Select>
+        </>
+      ) : (
+        <TextareaAutosize
+          value={textareaValue}
+          onChange={onChangeTextareaHandler}
+          className={style.textarea}
+          placeholder="Your reason…"
+          style={{ height: '100px' }}
+        />
+      )}
     </FormControl>
   )
 }

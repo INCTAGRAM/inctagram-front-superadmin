@@ -10,14 +10,6 @@ export type UserType = {
   profileLink: string
   dateAdded: string
 }
-type UserListType = {
-  userList: {
-    __typename?: 'UserPaginationOutput'
-    totalCount: number
-    data: Array<UserType>
-  }
-}
-
 export interface BanUserInput {
   input: {
     id: string
