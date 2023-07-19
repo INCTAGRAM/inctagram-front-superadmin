@@ -11,27 +11,30 @@ type PropsType = {
 export const ClassicSelect = ({ handleChange, chosenReason }: PropsType) => {
   const [selectValue, setSelectValue] = useState('')
   const [textareaValue, setTextareaValue] = useState('')
+  console.log('chosenReason', chosenReason, 'selectValue', selectValue, 'textareaValue', textareaValue)
   const onChangeHandler = (event: SelectChangeEvent) => {
     setSelectValue(event.target.value)
   }
-  console.log(selectValue, textareaValue)
   const onChangeTextareaHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setTextareaValue(event.target.value)
   }
+
   useEffect(() => {
-    if (selectValue === 'Another reason') {
+    if (chosenReason === '' || chosenReason === undefined) {
+      debugger
+      setSelectValue('')
+      setTextareaValue('')
+    }
+  }, [chosenReason])
+
+  useEffect(() => {
+    if (selectValue === 'Another reason' && textareaValue !== '') {
       handleChange(textareaValue)
     } else {
       handleChange(selectValue)
     }
   }, [textareaValue, selectValue])
 
-  useEffect(() => {
-    if (chosenReason === '') {
-      setSelectValue('')
-      setTextareaValue('')
-    }
-  }, [chosenReason])
   return (
     <FormControl fullWidth className={style.wrapperSelect}>
       {selectValue !== 'Another reason' ? (
