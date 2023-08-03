@@ -22,6 +22,7 @@ export const GetUsers = graphql(`
         username
         profileLink
         dateAdded
+        isBanned
       }
       totalCount
     }

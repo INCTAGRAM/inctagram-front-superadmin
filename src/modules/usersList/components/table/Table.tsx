@@ -52,8 +52,9 @@ export const Table = ({ usersData, usersArgs, setUsersArgs, variables }: PropsTy
       <table className={styles.usersTable}>
         <thead className={styles.userList}>
           <tr>
-            <th>User ID</th>
+            <th colSpan={2}>User ID</th>
             <th onClick={sortUsername}>Username</th>
+            <th onClick={sortUsername}>Profile link</th>
             <th onClick={sortDate}>Date added</th>
             <th></th>
           </tr>
@@ -61,10 +62,17 @@ export const Table = ({ usersData, usersArgs, setUsersArgs, variables }: PropsTy
         <tbody>
           {usersData?.userList?.data.length !== 0 ? (
             usersData?.userList?.data.map((user) => {
+              const isBanUser = user.isBanned ? (
+                <IcomoonReact iconSet={iconSet} color={'#fff'} icon="Block" size={20} />
+              ) : (
+                ''
+              )
               return (
                 <tr key={user.id}>
-                  <td> {user.id}</td>
+                  <td>{isBanUser}</td>
+                  <td style={{ paddingLeft: '0px' }}>{user.id}</td>
                   <td>{user.username}</td>
+                  <td>{user.profileLink}</td>
                   <td>{dateConverter.fromMilliseconds(+user.dateAdded)}</td>
                   <td>
                     <button>

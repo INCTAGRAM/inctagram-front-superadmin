@@ -66,10 +66,10 @@ export type ImagesPaginationOutput = {
 
 export type Mutation = {
   __typename?: 'Mutation'
-  banUser: Scalars['Boolean']['output']
+  banUser?: Maybe<Scalars['ID']['output']>
   createAdmin: Admin
   deleteUser?: Maybe<Scalars['ID']['output']>
-  unBanUser: Scalars['Boolean']['output']
+  unBanUser?: Maybe<Scalars['ID']['output']>
 }
 
 export type MutationBanUserArgs = {
@@ -205,6 +205,7 @@ export type UserOutput = {
   __typename?: 'UserOutput'
   dateAdded: Scalars['String']['output']
   id: Scalars['ID']['output']
+  isBanned: Scalars['Boolean']['output']
   profileLink: Scalars['String']['output']
   username: Scalars['String']['output']
 }
@@ -247,7 +248,7 @@ export type BanUsersMutationVariables = Exact<{
   input: BanUserInput
 }>
 
-export type BanUsersMutation = { __typename?: 'Mutation'; banUser: boolean }
+export type BanUsersMutation = { __typename?: 'Mutation'; banUser?: string | null }
 
 export type UsersQueryVariables = Exact<{
   pageSize?: Scalars['Int']['input']
@@ -263,7 +264,14 @@ export type UsersQuery = {
   userList: {
     __typename?: 'UserPaginationOutput'
     totalCount: number
-    data: Array<{ __typename?: 'UserOutput'; id: string; username: string; profileLink: string; dateAdded: string }>
+    data: Array<{
+      __typename?: 'UserOutput'
+      id: string
+      username: string
+      profileLink: string
+      dateAdded: string
+      isBanned: boolean
+    }>
   }
 }
 
@@ -431,6 +439,7 @@ export const UsersDocument = {
                       { kind: 'Field', name: { kind: 'Name', value: 'username' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'profileLink' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'dateAdded' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'isBanned' } },
                     ],
                   },
                 },

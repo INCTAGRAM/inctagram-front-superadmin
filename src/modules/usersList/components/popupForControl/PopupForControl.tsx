@@ -32,7 +32,6 @@ export const PopupForControl = ({
   const [isOpenDeleteUsersPopup, setIsOpenDeleteUsersPopup] = useState(false)
   const [isOpenBlockingUsersPopup, setIsOpenBlockingUsersPopup] = useState(false)
   const [chosenReason, setChosenReason] = useState('')
-  console.log(chosenReason)
 
   const popupForControlRef = useRef<HTMLDivElement>(null)
   const closePopupForControl = () => {

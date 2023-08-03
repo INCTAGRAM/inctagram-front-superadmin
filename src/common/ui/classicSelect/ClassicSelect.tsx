@@ -11,7 +11,7 @@ type PropsType = {
 export const ClassicSelect = ({ handleChange, chosenReason }: PropsType) => {
   const [selectValue, setSelectValue] = useState('')
   const [textareaValue, setTextareaValue] = useState('')
-  console.log('chosenReason', chosenReason, 'selectValue', selectValue, 'textareaValue', textareaValue)
+  // console.log('chosenReason', chosenReason, 'selectValue', selectValue, 'textareaValue', textareaValue)
   const onChangeHandler = (event: SelectChangeEvent) => {
     setSelectValue(event.target.value)
   }
@@ -21,7 +21,6 @@ export const ClassicSelect = ({ handleChange, chosenReason }: PropsType) => {
 
   useEffect(() => {
     if (chosenReason === '' || chosenReason === undefined) {
-      debugger
       setSelectValue('')
       setTextareaValue('')
     }

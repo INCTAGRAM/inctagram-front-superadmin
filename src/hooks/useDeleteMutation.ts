@@ -10,14 +10,6 @@ export type UserType = {
   profileLink: string
   dateAdded: string
 }
-type UserListType = {
-  userList: {
-    __typename?: 'UserPaginationOutput'
-    totalCount: number
-    data: Array<UserType>
-  }
-}
-
 export interface DeleteUserInput {
   input: {
     id: string
@@ -26,6 +18,10 @@ export interface DeleteUserInput {
 
 export const useDeleteMutation = (variables: UsersListArgsType) => {
   const [deleteUser, { error: deleteUserError, called }] = useMutation<any, DeleteUserInput>(DELETE_USERS, {
+    // when we use refetchQueries update function does not work
+    refetchQueries: [
+      GetUsers, // DocumentNode object parsed with gql
+    ],
     update: (cache, { data: { deleteUser } }) => {
       // read the existing data from the cache
       const { userList } = cache.readQuery<any>({ query: GetUsers, variables }) || { userList: [] }

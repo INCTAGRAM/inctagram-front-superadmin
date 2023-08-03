@@ -20,15 +20,14 @@ export interface BanUserInput {
 export const useBanMutation = (variables: UsersListArgsType) => {
   const [banUser, { error: banUserError, called: banUsersCalled }] = useMutation<any, BanUserInput>(BAN_USERS, {
     update: (cache, { data: { banUser } }) => {
-      // read the existing data from the cache
       const { userList } = cache.readQuery<any>({ query: GetUsers, variables }) || { userList: [] }
-      // filter out the deleted user from the userList data array
-      const updatedData = userList?.data.filter((user: UserType) => user.id !== banUser)
-      // write the updated data to the cache
+      const updatedUser = userList?.data.find((user: UserType) => user.id === banUser)
+      const newUser = { ...updatedUser, isBanned: true }
+      console.log(newUser)
       cache.writeQuery({
         query: GetUsers,
         variables,
-        data: { userList: { ...userList, data: updatedData } },
+        data: { userList: { ...userList, data: { ...userList, newUser } } },
       })
     },
   })
