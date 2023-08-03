@@ -10,6 +10,7 @@ import { SuccessSnackbar } from '@/common/ui/alertSnackbar/SuccessSnackbar'
 import { useDeleteMutation } from '@/hooks/useDeleteMutation'
 import { ErrorSnackbar } from '@/common/ui/alertSnackbar/ErrorSnackbar'
 import { useBanMutation } from '@/hooks/useBanMutation'
+import { linkConverter } from '@/helpers/linkConverter'
 
 type PropsType = {
   usersData: UsersQuery
@@ -72,7 +73,11 @@ export const Table = ({ usersData, usersArgs, setUsersArgs, variables }: PropsTy
                   <td>{isBanUser}</td>
                   <td style={{ paddingLeft: '0px' }}>{user.id}</td>
                   <td>{user.username}</td>
-                  <td>{user.profileLink}</td>
+                  <td>
+                    <a style={{ textDecoration: 'none', color: 'inherit' }} href={user.profileLink}>
+                      {linkConverter.fromLink(user.profileLink)}
+                    </a>
+                  </td>
                   <td>{dateConverter.fromMilliseconds(+user.dateAdded)}</td>
                   <td>
                     <button>

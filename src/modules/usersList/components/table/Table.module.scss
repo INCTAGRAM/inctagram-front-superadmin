@@ -4,14 +4,17 @@
     background: #171717;
     text-align: left;
     color: #fff;
+
     &:first-child {
-      width: 350px;
+      width: 450px;
     }
-    &:nth-child(2),&:nth-child(3) {
-      width: 250px;
+
+    &:nth-child(2), &:nth-child(3) {
+      width: 300px;
     }
+
     &:last-child {
-      width: 50px;
+      width: 100px;
     }
   }
 
@@ -24,9 +27,14 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 
-      &:last-child {
+    &:first-child {
+      border-left: 1px solid #171717;
+    }
+
+    &:last-child {
       overflow: visible;
       text-align: center;
+      border-right: 1px solid #171717;
     }
   }
 }
