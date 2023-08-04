@@ -5,6 +5,7 @@ import styles from './ConfirmActionPopup.module.scss'
 import { SelectForPopup } from '@/common/ui/selectForPopup/selectForPopup'
 
 type CloseDeletePopupType = {
+  isBanPopup?: boolean
   show: boolean
   block?: boolean
   title: string
@@ -18,8 +19,8 @@ type CloseDeletePopupType = {
 }
 
 export const ConfirmActionPopup = ({
+  isBanPopup,
   show,
-  block,
   title,
   text,
   closeActionHandler,
@@ -36,7 +37,7 @@ export const ConfirmActionPopup = ({
     <Popup title={title} show={show} modalOnClick={closeActionHandler}>
       <div className={styles.wrapperPopup}>
         <p className={styles.wrapperChildren}>{text}</p>
-        {block && (
+        {isBanPopup && (
           <SelectForPopup
             chosenReason={chosenReason ? chosenReason : ''}
             handleChange={(reason) => handleChangeHandler(reason)}
@@ -46,7 +47,7 @@ export const ConfirmActionPopup = ({
           <Button
             onClick={confirmActionHandler}
             className={`${styles.button} ${styles.btnYes}`}
-            disabled={chosenReason === ''}
+            disabled={isBanPopup && chosenReason === ''}
           >
             {confirmTextButton ? confirmTextButton : 'Yes'}
           </Button>

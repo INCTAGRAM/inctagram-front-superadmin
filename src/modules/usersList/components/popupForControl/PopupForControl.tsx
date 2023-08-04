@@ -15,6 +15,7 @@ export type PopupForControlType = {
   setIsOpen: (arg: boolean) => void
   deleteUser?: DeleteUserFunction
   banUser?: BanUserFunction
+  unBanUser?: any
   userId: string
   setChosenName?: (arg: string) => void
   userName: string
@@ -27,9 +28,11 @@ export const PopupForControl = ({
   isOpen,
   deleteUser,
   banUser,
+  unBanUser,
   setChosenName,
 }: PopupForControlType) => {
   const [isOpenDeleteUsersPopup, setIsOpenDeleteUsersPopup] = useState(false)
+  const [isBanPopup, setIsBanPopup] = useState(false)
   const [isOpenBlockingUsersPopup, setIsOpenBlockingUsersPopup] = useState(false)
   const [chosenReason, setChosenReason] = useState('')
 
@@ -57,6 +60,21 @@ export const PopupForControl = ({
     banUser && userId && banUser({ variables: { input: { id: userId, banReason: chosenReason } } })
     setChosenName && setChosenName(userName)
     closePopup()
+    setIsBanPopup(false)
+  }
+
+  const unBanUserHandler = () => {
+    unBanUser && userId && unBanUser({ variables: { input: { id: userId } } })
+    closePopup()
+    setIsBanPopup(false)
+  }
+  const blockingHandler = () => {
+    setIsOpenBlockingUsersPopup(true)
+    setIsBanPopup(true)
+  }
+  const unBlockingHandler = () => {
+    setIsOpenBlockingUsersPopup(true)
+    setIsBanPopup(false)
   }
 
   return (
@@ -67,11 +85,15 @@ export const PopupForControl = ({
             <IcomoonReact iconSet={iconSet} color={'#fff'} icon="person-remove-outline" size={20} />
             <span>Delete User</span>
           </button>
-          <button onClick={() => setIsOpenBlockingUsersPopup(true)}>
+          <button onClick={() => blockingHandler()}>
             <IcomoonReact iconSet={iconSet} color={'#fff'} icon="Block" size={20} />
             <span>Ban in the system</span>
           </button>
-          <button>
+          <button onClick={() => unBlockingHandler()}>
+            <IcomoonReact iconSet={iconSet} color={'#fff'} icon="eye-outline" size={20} />
+            <span>Un-ban in the system</span>
+          </button>
+          <button onClick={() => alert('Change later')}>
             <IcomoonReact iconSet={iconSet} color={'#fff'} icon="more-horizontal" size={20} />
             <span>More information</span>
           </button>
@@ -85,12 +107,12 @@ export const PopupForControl = ({
         confirmActionHandler={deleteUserHandler}
       />
       <ConfirmActionPopup
-        block={true}
+        isBanPopup={isBanPopup}
         show={isOpenBlockingUsersPopup}
-        title={'Ban user'}
-        text={`Are you sure to ban this user, ${userName} ?`}
+        title={isBanPopup ? 'Ban user' : 'Un-ban user'}
+        text={`Are you sure to ${isBanPopup ? 'ban' : 'un-ban'} this user, ${userName} ?`}
         closeActionHandler={closePopup}
-        confirmActionHandler={banUserHandler}
+        confirmActionHandler={isBanPopup ? banUserHandler : unBanUserHandler}
         setChosenReason={setChosenReason}
         chosenReason={chosenReason}
       />

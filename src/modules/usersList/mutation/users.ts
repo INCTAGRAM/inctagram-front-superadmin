@@ -11,3 +11,9 @@ export const BAN_USERS = graphql(`
     banUser(input: $input)
   }
 `)
+
+export const UN_BAN_USERS = graphql(`
+  mutation unBanUsers($input: UnBanUserInput!) {
+    unBanUser(input: $input)
+  }
+`)

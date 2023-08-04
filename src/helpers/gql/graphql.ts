@@ -250,6 +250,12 @@ export type BanUsersMutationVariables = Exact<{
 
 export type BanUsersMutation = { __typename?: 'Mutation'; banUser?: string | null }
 
+export type UnBanUsersMutationVariables = Exact<{
+  input: UnBanUserInput
+}>
+
+export type UnBanUsersMutation = { __typename?: 'Mutation'; unBanUser?: string | null }
+
 export type UsersQueryVariables = Exact<{
   pageSize?: Scalars['Int']['input']
   page?: Scalars['Int']['input']
@@ -341,6 +347,39 @@ export const BanUsersDocument = {
     },
   ],
 } as unknown as DocumentNode<BanUsersMutation, BanUsersMutationVariables>
+export const UnBanUsersDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'unBanUsers' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'input' } },
+          type: { kind: 'NonNullType', type: { kind: 'NamedType', name: { kind: 'Name', value: 'UnBanUserInput' } } },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'unBanUser' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'input' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'input' } },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<UnBanUsersMutation, UnBanUsersMutationVariables>
 export const UsersDocument = {
   kind: 'Document',
   definitions: [

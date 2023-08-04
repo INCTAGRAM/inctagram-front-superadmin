@@ -48,6 +48,7 @@ export function makeFragmentData<F extends DocumentTypeDecoration<any, any>, FT 
 ): FragmentType<F> {
   return data as FragmentType<F>
 }
+
 export function isFragmentReady<TQuery, TFrag>(
   queryNode: DocumentTypeDecoration<TQuery, any>,
   fragmentNode: TypedDocumentNode<TFrag>,

@@ -6,15 +6,15 @@
     color: #fff;
 
     &:first-child {
-      width: 450px;
+      width: 350px;
     }
 
     &:nth-child(2), &:nth-child(3) {
-      width: 300px;
+      width: 280px;
     }
 
     &:last-child {
-      width: 100px;
+      width: 150px;
     }
   }
 

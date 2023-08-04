@@ -23,7 +23,6 @@ export const useBanMutation = (variables: UsersListArgsType) => {
       const { userList } = cache.readQuery<any>({ query: GetUsers, variables }) || { userList: [] }
       const updatedUser = userList?.data.find((user: UserType) => user.id === banUser)
       const newUser = { ...updatedUser, isBanned: true }
-      console.log(newUser)
       cache.writeQuery({
         query: GetUsers,
         variables,

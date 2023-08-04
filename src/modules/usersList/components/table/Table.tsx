@@ -11,6 +11,7 @@ import { useDeleteMutation } from '@/hooks/useDeleteMutation'
 import { ErrorSnackbar } from '@/common/ui/alertSnackbar/ErrorSnackbar'
 import { useBanMutation } from '@/hooks/useBanMutation'
 import { linkConverter } from '@/helpers/linkConverter'
+import { useUnBanMutation } from '@/hooks/useUnBanMutation'
 
 type PropsType = {
   usersData: UsersQuery
@@ -25,6 +26,7 @@ export const Table = ({ usersData, usersArgs, setUsersArgs, variables }: PropsTy
 
   const { deleteUser, deleteUserError, called: deleteUsersCalled } = useDeleteMutation(variables)
   const { banUser, banUserError, banUsersCalled } = useBanMutation(variables)
+  const { unBanUser, unBanUserError, unBanUsersCalled } = useUnBanMutation(variables)
   const sortUsername = () => {
     if (usersArgs.sortField === UserSortFields.Username) {
       setUsersArgs({
@@ -95,6 +97,7 @@ export const Table = ({ usersData, usersArgs, setUsersArgs, variables }: PropsTy
                       userId={user.id}
                       deleteUser={deleteUser}
                       banUser={banUser}
+                      unBanUser={unBanUser}
                       setChosenName={setChosenName}
                       userName={user.username}
                     />
@@ -109,7 +112,7 @@ export const Table = ({ usersData, usersArgs, setUsersArgs, variables }: PropsTy
           )}
         </tbody>
       </table>
-      {chosenName !== '' && (deleteUsersCalled || banUsersCalled) && (
+      {(deleteUsersCalled || banUsersCalled) && (
         <SuccessSnackbar
           message={`User ${chosenName} ${deleteUsersCalled ? 'deleted' : 'ban'} successfully`}
           time={3000}
