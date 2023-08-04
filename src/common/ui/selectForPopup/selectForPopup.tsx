@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { InputLabel, MenuItem, Select, SelectChangeEvent, TextareaAutosize } from '@mui/material'
 import FormControl from '@mui/material/FormControl'
-import style from './select.module.scss'
+import style from './selectForPopup.module.scss'
 
 type PropsType = {
   handleChange: (value: string) => void

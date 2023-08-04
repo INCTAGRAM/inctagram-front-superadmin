@@ -9,15 +9,16 @@ import { useDebounce } from '@/hooks/useDebounce'
 import iconSet from '@/assets/icons/selection.json'
 import IcomoonReact from 'icomoon-react'
 import { LinearProgress } from '@mui/material'
+import { ClassicSelect } from '@/common/ui/classicSelect/CalssicSelect'
 import styles from './UsersList.module.scss'
-import { SelectForPopup } from '@/common/ui/selectForPopup/selectForPopup'
 
 export const UsersList = () => {
   const [searchValue, setSearchValue] = useState('')
+  const [selectBanValue, setSelectBanValue] = useState<BanFilterType>(BanFilterType.All)
   const [usersArgs, setUsersArgs] = useState<UsersListArgsType>({
     sortDirection: SortDirectionType.Desc,
     sortField: UserSortFields.DateAdded,
-    banFilter: BanFilterType.All,
+    banFilter: selectBanValue,
   })
   const {
     loading,
@@ -31,6 +32,9 @@ export const UsersList = () => {
   useEffect(() => {
     setUsersArgs({ ...usersArgs, searchUsernameTerm: searchValue })
   }, [debounceValue])
+  useEffect(() => {
+    setUsersArgs({ ...usersArgs, banFilter: selectBanValue })
+  }, [selectBanValue])
   const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.currentTarget.value)
   }
@@ -43,16 +47,19 @@ export const UsersList = () => {
   if (data) {
     return (
       <>
-        <InputText
-          className={styles.search}
-          type={'search'}
-          onChange={onChangeHandler}
-          value={searchValue}
-          placeholder={'Search'}
-          autoFocus={true}
-        >
-          <IcomoonReact iconSet={iconSet} color={'#8D9094'} icon="search" size={20} className={styles.searchIcon} />
-        </InputText>
+        <div className={styles.selectWrapper}>
+          <InputText
+            className={styles.search}
+            type={'search'}
+            onChange={onChangeHandler}
+            value={searchValue}
+            placeholder={'Search'}
+            autoFocus={true}
+          >
+            <IcomoonReact iconSet={iconSet} color={'#8D9094'} icon="search" size={20} className={styles.searchIcon} />
+          </InputText>
+          <ClassicSelect selectValue={selectBanValue} handleChange={setSelectBanValue} />
+        </div>
         <Table usersData={data} usersArgs={usersArgs} setUsersArgs={setUsersArgs} variables={usersArgs} />
       </>
     )
