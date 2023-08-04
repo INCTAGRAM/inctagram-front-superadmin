@@ -2,7 +2,7 @@ import { Popup } from '@/common/ui/popup/Popup'
 import React from 'react'
 import { Button } from '@/common/ui/button/Button'
 import styles from './ConfirmActionPopup.module.scss'
-import { ClassicSelect } from '@/common/ui/classicSelect/ClassicSelect'
+import { SelectForPopup } from '@/common/ui/selectForPopup/selectForPopup'
 
 type CloseDeletePopupType = {
   show: boolean
@@ -37,7 +37,7 @@ export const ConfirmActionPopup = ({
       <div className={styles.wrapperPopup}>
         <p className={styles.wrapperChildren}>{text}</p>
         {block && (
-          <ClassicSelect
+          <SelectForPopup
             chosenReason={chosenReason ? chosenReason : ''}
             handleChange={(reason) => handleChangeHandler(reason)}
           />

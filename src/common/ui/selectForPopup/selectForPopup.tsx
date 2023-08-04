@@ -1,17 +1,16 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { InputLabel, MenuItem, Select, SelectChangeEvent, TextareaAutosize } from '@mui/material'
 import FormControl from '@mui/material/FormControl'
-import style from './ClassicSelect.module.scss'
+import style from './select.module.scss'
 
 type PropsType = {
   handleChange: (value: string) => void
   chosenReason: string
 }
 
-export const ClassicSelect = ({ handleChange, chosenReason }: PropsType) => {
+export const SelectForPopup = ({ handleChange, chosenReason }: PropsType) => {
   const [selectValue, setSelectValue] = useState('')
   const [textareaValue, setTextareaValue] = useState('')
-  // console.log('chosenReason', chosenReason, 'selectValue', selectValue, 'textareaValue', textareaValue)
   const onChangeHandler = (event: SelectChangeEvent) => {
     setSelectValue(event.target.value)
   }

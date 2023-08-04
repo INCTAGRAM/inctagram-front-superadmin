@@ -10,6 +10,7 @@ import iconSet from '@/assets/icons/selection.json'
 import IcomoonReact from 'icomoon-react'
 import { LinearProgress } from '@mui/material'
 import styles from './UsersList.module.scss'
+import { SelectForPopup } from '@/common/ui/selectForPopup/selectForPopup'
 
 export const UsersList = () => {
   const [searchValue, setSearchValue] = useState('')
