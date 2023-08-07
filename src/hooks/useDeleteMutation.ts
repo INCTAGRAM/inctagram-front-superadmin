@@ -23,11 +23,8 @@ export const useDeleteMutation = (variables: UsersListArgsType) => {
       GetUsers, // DocumentNode object parsed with gql
     ],
     update: (cache, { data: { deleteUser } }) => {
-      // read the existing data from the cache
       const { userList } = cache.readQuery<any>({ query: GetUsers, variables }) || { userList: [] }
-      // filter out the deleted user from the userList data array
       const updatedData = userList?.data.filter((user: UserType) => user.id !== deleteUser)
-      // write the updated data to the cache
       cache.writeQuery({
         query: GetUsers,
         variables,
