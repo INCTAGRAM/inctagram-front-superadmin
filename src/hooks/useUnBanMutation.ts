@@ -20,10 +20,11 @@ export const useUnBanMutation = (variables: UsersListArgsType) => {
         const { userList } = cache.readQuery<any>({ query: GetUsers, variables }) || { userList: [] }
         const updatedUser = userList?.data.find((user: UserType) => user.id === unBanUser)
         const newUser = { ...updatedUser, isBanned: false }
+        const updatedData = userList?.data.map((user: UserType) => (user.id === unBanUser ? newUser : user))
         cache.writeQuery({
           query: GetUsers,
           variables,
-          data: { userList: { ...userList, data: { ...userList, newUser } } },
+          data: { userList: { ...userList, data: updatedData } },
         })
       },
     }

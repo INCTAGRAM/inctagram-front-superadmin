@@ -10,6 +10,7 @@ export type UserType = {
   profileLink: string
   dateAdded: string
 }
+
 export interface BanUserInput {
   input: {
     id: string
@@ -23,10 +24,11 @@ export const useBanMutation = (variables: UsersListArgsType) => {
       const { userList } = cache.readQuery<any>({ query: GetUsers, variables }) || { userList: [] }
       const updatedUser = userList?.data.find((user: UserType) => user.id === banUser)
       const newUser = { ...updatedUser, isBanned: true }
+      const updatedData = userList?.data.map((user: UserType) => (user.id === banUser ? newUser : user))
       cache.writeQuery({
         query: GetUsers,
         variables,
-        data: { userList: { ...userList, data: { ...userList, newUser } } },
+        data: { userList: { ...userList, data: updatedData } },
       })
     },
   })
