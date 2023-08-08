@@ -6,16 +6,21 @@ import { ConfirmActionPopup } from '@/common/ui/popup/confirmActionPopup/Confirm
 import styles from './PopupForControl.module.scss'
 import { DeleteUserInput } from '@/hooks/useDeleteMutation'
 import { BanUserInput } from '@/hooks/useBanMutation'
+import { FetchResult } from '@apollo/client'
+import { ID } from 'graphql-ws'
+import { UnBanUserInput } from '@/hooks/useUnBanMutation'
 
-type DeleteUserFunction = (options: { variables: DeleteUserInput }) => Promise<any>
-type BanUserFunction = (options: { variables: BanUserInput }) => Promise<any>
+type DeleteUserFunction = (options: { variables: DeleteUserInput }) => Promise<FetchResult<ID>>
+type BanUserFunction = (options: { variables: BanUserInput }) => Promise<FetchResult<ID>>
+type UnBanUserFunction = (options: { variables: UnBanUserInput }) => Promise<FetchResult<ID>>
 
 export type PopupForControlType = {
   isOpen: boolean
   setIsOpen: (arg: boolean) => void
+  setLastMutation?: (kind: string) => void
   deleteUser?: DeleteUserFunction
   banUser?: BanUserFunction
-  unBanUser?: any
+  unBanUser?: UnBanUserFunction
   userId: string
   setChosenName?: (arg: string) => void
   userName: string
@@ -25,6 +30,7 @@ export const PopupForControl = ({
   userId,
   userName,
   setIsOpen,
+  setLastMutation,
   isOpen,
   deleteUser,
   banUser,
@@ -54,6 +60,7 @@ export const PopupForControl = ({
     deleteUser && userId && deleteUser({ variables: { input: { id: userId } } })
     setChosenName && setChosenName(userName)
     closePopup()
+    setLastMutation && setLastMutation('delete')
   }
 
   const banUserHandler = () => {
@@ -61,12 +68,15 @@ export const PopupForControl = ({
     setChosenName && setChosenName(userName)
     closePopup()
     setIsBanPopup(false)
+    setLastMutation && setLastMutation('ban')
   }
 
   const unBanUserHandler = () => {
     unBanUser && userId && unBanUser({ variables: { input: { id: userId } } })
+    setChosenName && setChosenName(userName)
     closePopup()
     setIsBanPopup(false)
+    setLastMutation && setLastMutation('unBan')
   }
   const blockingHandler = () => {
     setIsOpenBlockingUsersPopup(true)

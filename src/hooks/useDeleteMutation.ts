@@ -17,7 +17,10 @@ export interface DeleteUserInput {
 }
 
 export const useDeleteMutation = (variables: UsersListArgsType) => {
-  const [deleteUser, { error: deleteUserError, called }] = useMutation<any, DeleteUserInput>(DELETE_USERS, {
+  const [
+    deleteUser,
+    { error: deleteUserError, called: deleteUsersCalled, loading: deleteUsersLoading, data: deleteUserData },
+  ] = useMutation<any, DeleteUserInput>(DELETE_USERS, {
     // when we use refetchQueries update function does not work
     refetchQueries: [
       GetUsers, // DocumentNode object parsed with gql
@@ -33,5 +36,5 @@ export const useDeleteMutation = (variables: UsersListArgsType) => {
     },
   })
 
-  return { deleteUser, deleteUserError, called }
+  return { deleteUser, deleteUserError, deleteUsersCalled, deleteUsersLoading, deleteUserData }
 }

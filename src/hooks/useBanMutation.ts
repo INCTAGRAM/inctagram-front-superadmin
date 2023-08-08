@@ -19,7 +19,10 @@ export interface BanUserInput {
 }
 
 export const useBanMutation = (variables: UsersListArgsType) => {
-  const [banUser, { error: banUserError, called: banUsersCalled }] = useMutation<any, BanUserInput>(BAN_USERS, {
+  const [
+    banUser,
+    { error: banUserError, called: banUsersCalled, loading: banUsersLoading, data: banUsersData, client },
+  ] = useMutation<any, BanUserInput>(BAN_USERS, {
     update: (cache, { data: { banUser } }) => {
       const { userList } = cache.readQuery<any>({ query: GetUsers, variables }) || { userList: [] }
       const updatedUser = userList?.data.find((user: UserType) => user.id === banUser)
@@ -32,6 +35,5 @@ export const useBanMutation = (variables: UsersListArgsType) => {
       })
     },
   })
-
-  return { banUser, banUserError, banUsersCalled }
+  return { banUser, banUserError, banUsersCalled, banUsersLoading, banUsersData, client }
 }

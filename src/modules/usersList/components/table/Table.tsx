@@ -1,17 +1,17 @@
+import React, { useEffect, useState } from 'react'
 import { dateConverter } from '@/helpers/dateConverter'
 import { SortDirectionType, UserSortFields, UsersQuery } from '@/helpers/gql/graphql'
 import IcomoonReact from 'icomoon-react'
 import iconSet from '@/assets/icons/selection.json'
 import { UsersListArgsType } from '@/modules/usersList/queries/types'
 import { PopupForControl } from '@/modules/usersList/components/popupForControl/PopupForControl'
-import React, { useState } from 'react'
-import styles from './Table.module.scss'
 import { SuccessSnackbar } from '@/common/ui/alertSnackbar/SuccessSnackbar'
 import { useDeleteMutation } from '@/hooks/useDeleteMutation'
 import { ErrorSnackbar } from '@/common/ui/alertSnackbar/ErrorSnackbar'
 import { useBanMutation } from '@/hooks/useBanMutation'
 import { linkConverter } from '@/helpers/linkConverter'
 import { useUnBanMutation } from '@/hooks/useUnBanMutation'
+import styles from './Table.module.scss'
 
 type PropsType = {
   usersData: UsersQuery
@@ -23,10 +23,19 @@ type PropsType = {
 export const Table = ({ usersData, usersArgs, setUsersArgs, variables }: PropsType) => {
   const [openUserId, setOpenUserId] = useState<string | null | boolean>(null)
   const [chosenName, setChosenName] = useState('')
+  const [lastMutation, setLastMutation] = useState('')
 
-  const { deleteUser, deleteUserError, called: deleteUsersCalled } = useDeleteMutation(variables)
-  const { banUser, banUserError, banUsersCalled } = useBanMutation(variables)
-  const { unBanUser, unBanUserError, unBanUsersCalled } = useUnBanMutation(variables)
+  const { deleteUser, deleteUserError, deleteUserData } = useDeleteMutation(variables)
+  const { banUser, banUserError, banUsersData } = useBanMutation(variables)
+  const { unBanUser, unBanUserError, unBanUsersData } = useUnBanMutation(variables)
+  const errorMessage = banUserError ? banUserError.message : unBanUserError?.message
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLastMutation('')
+    }, 3000)
+  }, [deleteUserData, banUsersData, unBanUsersData])
+
   const sortUsername = () => {
     if (usersArgs.sortField === UserSortFields.Username) {
       setUsersArgs({
@@ -49,7 +58,6 @@ export const Table = ({ usersData, usersArgs, setUsersArgs, variables }: PropsTy
       setUsersArgs({ ...usersArgs, sortField: UserSortFields.DateAdded, sortDirection: SortDirectionType.Desc })
     }
   }
-
   return (
     <>
       <table className={styles.usersTable}>
@@ -92,6 +100,7 @@ export const Table = ({ usersData, usersArgs, setUsersArgs, variables }: PropsTy
                       />
                     </button>
                     <PopupForControl
+                      setLastMutation={setLastMutation}
                       isOpen={openUserId === user.id}
                       setIsOpen={setOpenUserId}
                       userId={user.id}
@@ -112,16 +121,10 @@ export const Table = ({ usersData, usersArgs, setUsersArgs, variables }: PropsTy
           )}
         </tbody>
       </table>
-      {(deleteUsersCalled || banUsersCalled) && (
-        <SuccessSnackbar
-          message={`User ${chosenName} ${deleteUsersCalled ? 'deleted' : 'ban'} successfully`}
-          time={3000}
-        />
+      {!!lastMutation && <SuccessSnackbar message={`User ${chosenName} ${lastMutation} successfully`} time={3000} />}
+      {(deleteUserError || banUserError || unBanUserError) && (
+        <ErrorSnackbar error={deleteUserError ? deleteUserError.message : errorMessage} time={3000} />
       )}
-      {(deleteUserError && deleteUsersCalled) ||
-        (banUserError && banUsersCalled && (
-          <ErrorSnackbar error={deleteUserError ? deleteUserError?.message : banUserError.message} time={3000} />
-        ))}
     </>
   )
 }
