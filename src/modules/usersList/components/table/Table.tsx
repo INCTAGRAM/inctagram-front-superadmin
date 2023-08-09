@@ -12,6 +12,8 @@ import { useBanMutation } from '@/hooks/useBanMutation'
 import { linkConverter } from '@/helpers/linkConverter'
 import { useUnBanMutation } from '@/hooks/useUnBanMutation'
 import styles from './Table.module.scss'
+import Link from 'next/link'
+import { RouteNames } from '@/constants/routes'
 
 type PropsType = {
   usersData: UsersQuery
@@ -44,7 +46,11 @@ export const Table = ({ usersData, usersArgs, setUsersArgs, variables }: PropsTy
           usersArgs.sortDirection === SortDirectionType.Asc ? SortDirectionType.Desc : SortDirectionType.Asc,
       })
     } else {
-      setUsersArgs({ ...usersArgs, sortField: UserSortFields.Username, sortDirection: SortDirectionType.Asc })
+      setUsersArgs({
+        ...usersArgs,
+        sortField: UserSortFields.Username,
+        sortDirection: SortDirectionType.Asc,
+      })
     }
   }
   const sortDate = () => {
@@ -55,7 +61,11 @@ export const Table = ({ usersData, usersArgs, setUsersArgs, variables }: PropsTy
           usersArgs.sortDirection === SortDirectionType.Asc ? SortDirectionType.Desc : SortDirectionType.Asc,
       })
     } else {
-      setUsersArgs({ ...usersArgs, sortField: UserSortFields.DateAdded, sortDirection: SortDirectionType.Desc })
+      setUsersArgs({
+        ...usersArgs,
+        sortField: UserSortFields.DateAdded,
+        sortDirection: SortDirectionType.Desc,
+      })
     }
   }
   return (
@@ -82,9 +92,26 @@ export const Table = ({ usersData, usersArgs, setUsersArgs, variables }: PropsTy
                 <tr key={user.id}>
                   <td>{isBanUser}</td>
                   <td style={{ paddingLeft: '0px' }}>{user.id}</td>
-                  <td>{user.username}</td>
                   <td>
-                    <a style={{ textDecoration: 'none', color: 'inherit' }} href={user.profileLink}>
+                    <Link
+                      href={`${RouteNames.USER_INFO}/${user.id}`}
+                      key={user.id}
+                      style={{
+                        textDecoration: 'none',
+                        color: 'inherit',
+                      }}
+                    >
+                      {user.username}
+                    </Link>
+                  </td>
+                  <td>
+                    <a
+                      style={{
+                        textDecoration: 'none',
+                        color: 'inherit',
+                      }}
+                      href={user.profileLink}
+                    >
                       {linkConverter.fromLink(user.profileLink)}
                     </a>
                   </td>

@@ -1,0 +1,21 @@
+@import "src/assets/styles/variables";
+
+  .profileInfo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    color:$light_100;
+
+    .avatar {
+      margin-right: 24px;
+      border-radius: 50%;
+    }
+  }
+
+  .info {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 30px;
+    color:$light_100;
+  }
+

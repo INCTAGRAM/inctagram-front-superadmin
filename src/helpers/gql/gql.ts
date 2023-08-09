@@ -19,6 +19,12 @@ const documents = {
   '\n  mutation unBanUsers($input: UnBanUserInput!) {\n    unBanUser(input: $input)\n  }\n': types.UnBanUsersDocument,
   '\n  query users(\n    $pageSize: Int! = 10\n    $page: Int! = 1\n    $sortDirection: SortDirectionType! = Desc\n    $searchUsernameTerm: String! = ""\n    $sortField: UserSortFields! = DateAdded\n    $banFilter: BanFilterType!\n  ) {\n    userList(\n      pageSize: $pageSize\n      page: $page\n      sortDirection: $sortDirection\n      searchUsernameTerm: $searchUsernameTerm\n      sortField: $sortField\n      banFilter: $banFilter\n    ) {\n      data {\n        id\n        username\n        profileLink\n        dateAdded\n        isBanned\n      }\n      totalCount\n    }\n  }\n':
     types.UsersDocument,
+  '\n  query getUserInfo($id: ID!) {\n    userInfo(id: $id) {\n      id\n      username\n      dateAdded\n      avatar {\n        url\n        previewUrl\n      }\n    }\n  }\n':
+    types.GetUserInfoDocument,
+  '\n  query getUserPhoto($userId: ID!, $page: Int!, $pageSize: Int!) {\n    userPhotos(userId: $userId, page: $page, pageSize: $pageSize) {\n      data {\n        url\n        previewUrl\n      }\n    }\n  }\n':
+    types.GetUserPhotoDocument,
+  '\n  query getUserPayments($userId: ID!, $page: Int!, $pageSize: Int!) {\n    userPayments(userId: $userId, page: $page, pageSize: $pageSize) {\n      data {\n        startDate\n        endDate\n        subscriptionType\n        currency\n        price\n        paymentType\n      }\n    }\n  }\n':
+    types.GetUserPaymentsDocument,
 }
 
 /**
@@ -59,6 +65,24 @@ export function graphql(
 export function graphql(
   source: '\n  query users(\n    $pageSize: Int! = 10\n    $page: Int! = 1\n    $sortDirection: SortDirectionType! = Desc\n    $searchUsernameTerm: String! = ""\n    $sortField: UserSortFields! = DateAdded\n    $banFilter: BanFilterType!\n  ) {\n    userList(\n      pageSize: $pageSize\n      page: $page\n      sortDirection: $sortDirection\n      searchUsernameTerm: $searchUsernameTerm\n      sortField: $sortField\n      banFilter: $banFilter\n    ) {\n      data {\n        id\n        username\n        profileLink\n        dateAdded\n        isBanned\n      }\n      totalCount\n    }\n  }\n'
 ): (typeof documents)['\n  query users(\n    $pageSize: Int! = 10\n    $page: Int! = 1\n    $sortDirection: SortDirectionType! = Desc\n    $searchUsernameTerm: String! = ""\n    $sortField: UserSortFields! = DateAdded\n    $banFilter: BanFilterType!\n  ) {\n    userList(\n      pageSize: $pageSize\n      page: $page\n      sortDirection: $sortDirection\n      searchUsernameTerm: $searchUsernameTerm\n      sortField: $sortField\n      banFilter: $banFilter\n    ) {\n      data {\n        id\n        username\n        profileLink\n        dateAdded\n        isBanned\n      }\n      totalCount\n    }\n  }\n']
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query getUserInfo($id: ID!) {\n    userInfo(id: $id) {\n      id\n      username\n      dateAdded\n      avatar {\n        url\n        previewUrl\n      }\n    }\n  }\n'
+): (typeof documents)['\n  query getUserInfo($id: ID!) {\n    userInfo(id: $id) {\n      id\n      username\n      dateAdded\n      avatar {\n        url\n        previewUrl\n      }\n    }\n  }\n']
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query getUserPhoto($userId: ID!, $page: Int!, $pageSize: Int!) {\n    userPhotos(userId: $userId, page: $page, pageSize: $pageSize) {\n      data {\n        url\n        previewUrl\n      }\n    }\n  }\n'
+): (typeof documents)['\n  query getUserPhoto($userId: ID!, $page: Int!, $pageSize: Int!) {\n    userPhotos(userId: $userId, page: $page, pageSize: $pageSize) {\n      data {\n        url\n        previewUrl\n      }\n    }\n  }\n']
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query getUserPayments($userId: ID!, $page: Int!, $pageSize: Int!) {\n    userPayments(userId: $userId, page: $page, pageSize: $pageSize) {\n      data {\n        startDate\n        endDate\n        subscriptionType\n        currency\n        price\n        paymentType\n      }\n    }\n  }\n'
+): (typeof documents)['\n  query getUserPayments($userId: ID!, $page: Int!, $pageSize: Int!) {\n    userPayments(userId: $userId, page: $page, pageSize: $pageSize) {\n      data {\n        startDate\n        endDate\n        subscriptionType\n        currency\n        price\n        paymentType\n      }\n    }\n  }\n']
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {}
