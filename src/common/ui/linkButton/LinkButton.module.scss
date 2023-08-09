@@ -1,0 +1,13 @@
+@import "src/assets/styles/variables";
+
+.container {
+  margin: 23px 0;
+
+  .link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: $light_100;
+    text-decoration: none;
+  }
+}
