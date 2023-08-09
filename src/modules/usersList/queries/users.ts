@@ -28,3 +28,43 @@ export const GetUsers = graphql(`
     }
   }
 `)
+
+export const GetUserInfo = graphql(`
+  query getUserInfo($id: ID!) {
+    userInfo(id: $id) {
+      id
+      username
+      dateAdded
+      avatar {
+        url
+        previewUrl
+      }
+    }
+  }
+`)
+
+export const GetUserPhoto = graphql(`
+  query getUserPhoto($userId: ID!, $page: Int!, $pageSize: Int!) {
+    userPhotos(userId: $userId, page: $page, pageSize: $pageSize) {
+      data {
+        url
+        previewUrl
+      }
+    }
+  }
+`)
+
+export const GetUserPayments = graphql(`
+  query getUserPayments($userId: ID!, $page: Int!, $pageSize: Int!) {
+    userPayments(userId: $userId, page: $page, pageSize: $pageSize) {
+      data {
+        startDate
+        endDate
+        subscriptionType
+        currency
+        price
+        paymentType
+      }
+    }
+  }
+`)
