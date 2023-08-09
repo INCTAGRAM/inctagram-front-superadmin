@@ -5,10 +5,10 @@ import IcomoonReact from 'icomoon-react'
 import { ConfirmActionPopup } from '@/common/ui/popup/confirmActionPopup/ConfirmActionPopup'
 import styles from './PopupForControl.module.scss'
 import { DeleteUserInput } from '@/hooks/useDeleteMutation'
-import { BanUserInput } from '@/hooks/useBanMutation'
+import { BanUserInput } from '@/modules/usersList/hooks/useBanMutation'
 import { FetchResult } from '@apollo/client'
 import { ID } from 'graphql-ws'
-import { UnBanUserInput } from '@/hooks/useUnBanMutation'
+import { UnBanUserInput } from '@/modules/usersList/hooks/useUnBanMutation'
 
 type DeleteUserFunction = (options: { variables: DeleteUserInput }) => Promise<FetchResult<ID>>
 type BanUserFunction = (options: { variables: BanUserInput }) => Promise<FetchResult<ID>>

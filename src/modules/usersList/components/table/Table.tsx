@@ -8,12 +8,14 @@ import { PopupForControl } from '@/modules/usersList/components/popupForControl/
 import { SuccessSnackbar } from '@/common/ui/alertSnackbar/SuccessSnackbar'
 import { useDeleteMutation } from '@/hooks/useDeleteMutation'
 import { ErrorSnackbar } from '@/common/ui/alertSnackbar/ErrorSnackbar'
-import { useBanMutation } from '@/hooks/useBanMutation'
+import { useBanMutation } from '@/modules/usersList/hooks/useBanMutation'
 import { linkConverter } from '@/helpers/linkConverter'
-import { useUnBanMutation } from '@/hooks/useUnBanMutation'
+import { useUnBanMutation } from '@/modules/usersList/hooks/useUnBanMutation'
 import styles from './Table.module.scss'
 import Link from 'next/link'
 import { RouteNames } from '@/constants/routes'
+import { CellSorting } from '@/modules/usersList/components/сellSorting'
+import { useSortHandler } from '@/modules/usersList/hooks/useSortHandler'
 
 type PropsType = {
   usersData: UsersQuery
@@ -27,9 +29,9 @@ export const Table = ({ usersData, usersArgs, setUsersArgs, variables }: PropsTy
   const [chosenName, setChosenName] = useState('')
   const [lastMutation, setLastMutation] = useState('')
 
-  const { deleteUser, deleteUserError, deleteUserData } = useDeleteMutation(variables)
-  const { banUser, banUserError, banUsersData } = useBanMutation(variables)
-  const { unBanUser, unBanUserError, unBanUsersData } = useUnBanMutation(variables)
+  const { deleteUser, deleteUserError, deleteUserData, deleteUsersLoading } = useDeleteMutation(variables)
+  const { banUser, banUserError, banUsersData, banUsersLoading } = useBanMutation(variables)
+  const { unBanUser, unBanUserError, unBanUsersData, unBanUsersLoading } = useUnBanMutation(variables)
   const errorMessage = banUserError ? banUserError.message : unBanUserError?.message
 
   useEffect(() => {
@@ -38,45 +40,36 @@ export const Table = ({ usersData, usersArgs, setUsersArgs, variables }: PropsTy
     }, 3000)
   }, [deleteUserData, banUsersData, unBanUsersData])
 
-  const sortUsername = () => {
-    if (usersArgs.sortField === UserSortFields.Username) {
-      setUsersArgs({
-        ...usersArgs,
-        sortDirection:
-          usersArgs.sortDirection === SortDirectionType.Asc ? SortDirectionType.Desc : SortDirectionType.Asc,
-      })
-    } else {
-      setUsersArgs({
-        ...usersArgs,
-        sortField: UserSortFields.Username,
-        sortDirection: SortDirectionType.Asc,
-      })
-    }
-  }
-  const sortDate = () => {
-    if (usersArgs.sortField === UserSortFields.DateAdded) {
-      setUsersArgs({
-        ...usersArgs,
-        sortDirection:
-          usersArgs.sortDirection === SortDirectionType.Asc ? SortDirectionType.Desc : SortDirectionType.Asc,
-      })
-    } else {
-      setUsersArgs({
-        ...usersArgs,
-        sortField: UserSortFields.DateAdded,
-        sortDirection: SortDirectionType.Desc,
-      })
-    }
-  }
+  const { sortDate, sortUsername } = useSortHandler({ usersArgs, setUsersArgs })
   return (
     <>
       <table className={styles.usersTable}>
         <thead className={styles.userList}>
           <tr>
             <th colSpan={2}>User ID</th>
-            <th onClick={sortUsername}>Username</th>
-            <th onClick={sortUsername}>Profile link</th>
-            <th onClick={sortDate}>Date added</th>
+            <th onClick={sortUsername}>
+              Username
+              <CellSorting
+                name={UserSortFields.Username}
+                firstValue={SortDirectionType.Asc}
+                secondValue={SortDirectionType.Desc}
+                handleChangeSorting={sortUsername}
+                params={{ sortDirection: usersArgs.sortDirection!, sortField: usersArgs.sortField! }}
+                disabled={deleteUsersLoading || banUsersLoading || unBanUsersLoading}
+              />
+            </th>
+            <th>Profile link</th>
+            <th onClick={sortDate}>
+              Date added
+              <CellSorting
+                name={UserSortFields.DateAdded}
+                firstValue={SortDirectionType.Asc}
+                secondValue={SortDirectionType.Desc}
+                handleChangeSorting={sortDate}
+                params={{ sortDirection: usersArgs.sortDirection!, sortField: usersArgs.sortField! }}
+                disabled={deleteUsersLoading || banUsersLoading || unBanUsersLoading}
+              />
+            </th>
             <th></th>
           </tr>
         </thead>

@@ -5,7 +5,7 @@ import { Table } from '@/modules/usersList/components/table/Table'
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { UsersListArgsType } from '@/modules/usersList/queries/types'
 import { InputText } from '@/common/ui/inputText/InputText'
-import { useDebounce } from '@/hooks/useDebounce'
+import { useDebounce } from '@/modules/usersList/hooks/useDebounce'
 import iconSet from '@/assets/icons/selection.json'
 import IcomoonReact from 'icomoon-react'
 import { LinearProgress } from '@mui/material'
@@ -32,6 +32,7 @@ export const UsersList = () => {
   useEffect(() => {
     setUsersArgs({ ...usersArgs, searchUsernameTerm: searchValue })
   }, [debounceValue])
+
   useEffect(() => {
     setUsersArgs({ ...usersArgs, banFilter: selectBanValue })
   }, [selectBanValue])

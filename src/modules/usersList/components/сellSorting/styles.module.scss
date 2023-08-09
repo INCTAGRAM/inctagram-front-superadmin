@@ -1,0 +1,52 @@
+@import "src/assets/styles/variables";
+
+.container {
+  position: absolute;
+  transform: translateY(-7%) scale(0.9);
+  display: inline-flex;
+  flex-direction: column;
+  padding-left: 0.25rem;
+  color: $dark_100;
+
+  .label {
+    cursor: pointer;
+    line-height: 0.5rem;
+
+    & svg {
+      height: 10px;
+    }
+
+    &:first-child {
+      transform: translateY(-20%);
+    }
+
+    &:last-child {
+      transform: translateY(20%);
+    }
+
+    & .radio {
+      display: none;
+      width: 0;
+      height: 0;
+      opacity: 0;
+    }
+
+    &:has(.radio:checked) {
+      color: $light_500;
+      pointer-events: none;
+    }
+
+    &:hover {
+      color: $dark_100;
+    }
+
+    &:has(.radio:disabled) {
+      filter: saturate(0);
+      pointer-events: none;
+
+      &:has(.radio:not(:checked)) svg {
+        opacity: 0.5;
+      }
+    }
+  }
+}

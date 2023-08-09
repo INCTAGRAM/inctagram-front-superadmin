@@ -16,11 +16,12 @@ export interface UnBanUserInput {
     id: string
   }
 }
+
 export const useUnBanMutation = (variables: UsersListArgsType) => {
-  const [unBanUser, { error: unBanUserError, called: unBanUsersCalled, data: unBanUsersData }] = useMutation<
-    any,
-    UnBanUserInput
-  >(UN_BAN_USERS, {
+  const [
+    unBanUser,
+    { error: unBanUserError, called: unBanUsersCalled, loading: unBanUsersLoading, data: unBanUsersData },
+  ] = useMutation<any, UnBanUserInput>(UN_BAN_USERS, {
     update: (cache, { data: { unBanUser } }) => {
       const { userList } = cache.readQuery<any>({ query: GetUsers, variables }) || { userList: [] }
       const updatedUser = userList?.data.find((user: UserType) => user.id === unBanUser)
@@ -34,5 +35,5 @@ export const useUnBanMutation = (variables: UsersListArgsType) => {
     },
   })
 
-  return { unBanUser, unBanUserError, unBanUsersCalled, unBanUsersData }
+  return { unBanUser, unBanUserError, unBanUsersCalled, unBanUsersLoading, unBanUsersData }
 }
