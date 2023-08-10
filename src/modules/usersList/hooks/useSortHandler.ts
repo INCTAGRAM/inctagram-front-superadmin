@@ -17,7 +17,7 @@ export const useSortHandler = ({ usersArgs, setUsersArgs }: useSortHandlerType) 
       setUsersArgs({
         ...usersArgs,
         sortField: UserSortFields.Username,
-        sortDirection: SortDirectionType.Asc,
+        sortDirection: SortDirectionType.Desc,
       })
     }
   }
@@ -36,5 +36,6 @@ export const useSortHandler = ({ usersArgs, setUsersArgs }: useSortHandlerType) 
       })
     }
   }
+
   return { sortUsername, sortDate }
 }

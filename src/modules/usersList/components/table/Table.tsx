@@ -47,26 +47,32 @@ export const Table = ({ usersData, usersArgs, setUsersArgs, variables }: PropsTy
         <thead className={styles.userList}>
           <tr>
             <th colSpan={2}>User ID</th>
-            <th onClick={sortUsername}>
+            <th>
               Username
               <CellSorting
                 name={UserSortFields.Username}
                 firstValue={SortDirectionType.Asc}
                 secondValue={SortDirectionType.Desc}
                 handleChangeSorting={sortUsername}
-                params={{ sortDirection: usersArgs.sortDirection!, sortField: usersArgs.sortField! }}
+                params={{
+                  sortDirection: usersArgs.sortDirection as SortDirectionType,
+                  sortField: usersArgs.sortField as UserSortFields,
+                }}
                 disabled={deleteUsersLoading || banUsersLoading || unBanUsersLoading}
               />
             </th>
             <th>Profile link</th>
-            <th onClick={sortDate}>
+            <th>
               Date added
               <CellSorting
                 name={UserSortFields.DateAdded}
                 firstValue={SortDirectionType.Asc}
                 secondValue={SortDirectionType.Desc}
                 handleChangeSorting={sortDate}
-                params={{ sortDirection: usersArgs.sortDirection!, sortField: usersArgs.sortField! }}
+                params={{
+                  sortDirection: usersArgs.sortDirection as SortDirectionType,
+                  sortField: usersArgs.sortField as UserSortFields,
+                }}
                 disabled={deleteUsersLoading || banUsersLoading || unBanUsersLoading}
               />
             </th>
