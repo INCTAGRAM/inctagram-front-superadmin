@@ -14,8 +14,8 @@ import { useUnBanMutation } from '@/modules/usersList/hooks/useUnBanMutation'
 import styles from './Table.module.scss'
 import Link from 'next/link'
 import { RouteNames } from '@/constants/routes'
-import { CellSorting } from '@/modules/usersList/components/сellSorting'
 import { useSortHandler } from '@/modules/usersList/hooks/useSortHandler'
+import { CellSorting } from '@/modules/usersList/components/сellSorting'
 
 type PropsType = {
   usersData: UsersQuery

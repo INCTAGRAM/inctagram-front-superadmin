@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
-import { ArrowDropUp as ArrowDropUpIcon, ArrowDropDown as ArrowDropDownIcon } from '@mui/icons-material'
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp'
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import styles from './styles.module.scss'
 import { SortDirectionType, UserSortFields } from '@/helpers/gql/graphql'
 
