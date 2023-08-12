@@ -11,6 +11,7 @@ import IcomoonReact from 'icomoon-react'
 import { LinearProgress } from '@mui/material'
 import { ClassicSelect } from '@/common/ui/classicSelect/CalssicSelect'
 import styles from './UsersList.module.scss'
+import { UserListPagination } from '@/modules/usersList/components/pagination/UserListPagination'
 
 export const UsersList = () => {
   const [searchValue, setSearchValue] = useState('')
@@ -62,6 +63,13 @@ export const UsersList = () => {
           <ClassicSelect selectValue={selectBanValue} handleChange={setSelectBanValue} />
         </div>
         <Table usersData={data} usersArgs={usersArgs} setUsersArgs={setUsersArgs} variables={usersArgs} />
+        <UserListPagination
+          currentPage={usersArgs.page || 1}
+          totalCount={data.userList.totalCount}
+          pageCount={usersArgs.pageSize || 10}
+          params={usersArgs}
+          setSearchParams={setUsersArgs}
+        />
       </>
     )
   }
